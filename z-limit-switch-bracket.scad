@@ -38,7 +38,7 @@ lever_length = leg_length / 2 + centre / 2 + hinge_post / 2;
 
 bottom_z = microswitch_hole_y_offset() - switch_boss / 2;
 
-slot_x = -x_end_bar_length() + z_bar_offset() -lever_width - hinge_length - leg_width / 2 -base_clearance;
+slot_x = -x_end_bar_length() + z_bar_spacing() -lever_width - hinge_length - leg_width / 2 -base_clearance;
 screw_x = slot_x + leg_width / 2 + hinge_length + lever_width;
 screw_y = hinge_height - washer_diameter(M3_washer) / 2 - 2;
 screw_z = bottom_z + leg_length / 2 + hinge_post / 2;

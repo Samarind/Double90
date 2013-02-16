@@ -9,7 +9,7 @@
 //
 include <conf/config.scad>
 
-studding_dia = Z_screw_dia;
+studding_dia = Z_screw_diameter;
 shaft_dia = 7;        // includes tubing
 holeR = M3_clearance_radius;
 nutR = M3_nut_radius;

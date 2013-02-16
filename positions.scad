@@ -60,9 +60,9 @@ z_nut_offset = frame_nut_traps ? -z_slot_inset + nut_radius(frame_nut) + 0.5 : 0
 function z_motor_bracket_hole_offset() = ceil(NEMA_width(Z_motor)) / 2 - z_slot_inset + z_nut_offset;
 
 left_stay_x = max(-base_width / 2 + left_w / 2,
-                  idler_end - z_bar_offset() + z_motor_bracket_hole_offset() + washer_diameter(M4_washer) / 2 + 1) + sheet_thickness(frame) / 2;
+                  idler_end - z_bar_spacing() + z_motor_bracket_hole_offset() + washer_diameter(M4_washer) / 2 + 1) + sheet_thickness(frame) / 2;
 
-right_stay_x = frame_nuts ? min(motor_end, motor_end + z_bar_offset() - z_motor_bracket_hole_offset() - washer_diameter(M4_washer) / 2 - 1 - sheet_thickness(frame) / 2)
+right_stay_x = frame_nuts ? min(motor_end, motor_end + z_bar_spacing() - z_motor_bracket_hole_offset() - washer_diameter(M4_washer) / 2 - 1 - sheet_thickness(frame) / 2)
                           : max(motor_end, base_width / 2 - right_w  + sheet_thickness(frame) / 2 + fixing_block_height() + base_clearance);
 
 Y_belt_height = y_motor_height() + pulley_inner_radius + belt_thickness(Y_belt);

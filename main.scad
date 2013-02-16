@@ -44,7 +44,7 @@ module x_axis_assembly(show_extruder) {
     for(side = [-1,1])
         translate([(idler_end + motor_end) / 2 + eta, side * x_bar_spacing() / 2, Z + Z0])
             rotate([0,90,0])
-                rod(X_bar_dia, X_bar_length);
+                rod(X_smooth_rod_diameter, X_bar_length);
 
     translate([-X + X_origin, 0, Z + Z0 + x_carriage_offset()])
         rotate([180, 0, 180])
@@ -126,15 +126,15 @@ module z_end(motor_end) {
         - (Z_motor_length + NEMA_shaft_length(Z_motor) + 2);
 
     if(!motor_end && bottom_limit_switch)
-        translate([-z_bar_offset(), gantry_setback, Z0 - x_end_thickness() / 2])
+        translate([-z_bar_spacing(), gantry_setback, Z0 - x_end_thickness() / 2])
             z_limit_switch_assembly();
 
-    translate([-z_bar_offset(), 0, Z_motor_length]) {
+    translate([-z_bar_spacing(), 0, Z_motor_length]) {
 
         z_motor_assembly(gantry_setback, motor_end);
 
         translate([0, 0, NEMA_shaft_length(Z_motor) + 2 + Z_screw_length / 2]) {
-            studding(d = Z_screw_dia, l = Z_screw_length);
+            studding(d = Z_screw_diameter, l = Z_screw_length);
 
             translate([0, 0, -Z_screw_length / 2 + z_coupling_length() / 2 - 1])
                 render() z_screw_pointer_stl();
@@ -147,10 +147,10 @@ module z_end(motor_end) {
             rotate([180, 0, 0])
                 nut(Z_nut, brass = true);
 
-        translate([z_bar_offset(), 0, Z_bar_length / 2])
+        translate([z_bar_spacing(), 0, Z_bar_length / 2])
             rod(Z_smooth_rod_diameter, Z_bar_length);
 
-        translate([z_bar_offset(), gantry_setback, Z_bar_length - bar_clamp_depth / 2]) {
+        translate([z_bar_spacing(), gantry_setback, Z_bar_length - bar_clamp_depth / 2]) {
             rotate([90,motor_end ? 90 : - 90, 0])
                 z_bar_clamp_assembly(Z_smooth_rod_diameter, gantry_setback, bar_clamp_depth, !motor_end);
         }
@@ -204,12 +204,12 @@ Y_belt_gap = Y_belt_anchor_i - Y_belt_anchor_m - 2 * Y_belt_end;
 module rail(length, height, endstop) {
     translate([0, 0, height])
         rotate([90,0,0])
-            rod(Y_bar_dia, length);
+            rod(Y_smooth_rod_diameter, length);
 
     for(end = [-1, 1])
         translate([0, end * (length / 2 - bar_clamp_depth / 2), 0])
             rotate([0, 0, 90])
-                y_bar_clamp_assembly(Y_bar_dia, height, bar_clamp_depth, endstop && end == 1);
+                y_bar_clamp_assembly(Y_smooth_rod_diameter, height, bar_clamp_depth, endstop && end == 1);
 }
 
 Y2_rail_offset = (bar_clamp_switch_y_offset() - axis_end_clearance) / 2;
@@ -227,7 +227,7 @@ module rail_holes(length) {
     for(end = [-1, 1])
         translate([0, end * (length / 2 - bar_clamp_depth / 2), 0])
             rotate([0, 0, 90])
-                bar_clamp_holes(Y_bar_dia, true)
+                bar_clamp_holes(Y_smooth_rod_diameter, true)
                     base_screw_hole();
 }
 
@@ -553,10 +553,10 @@ module frame_base() {
         fixing_block_holes();
         y_axis_screw_holes();
 
-        translate([motor_end + z_bar_offset(), 0, 0])               // in case motor has second shaft
+        translate([motor_end + z_bar_spacing(), 0, 0])               // in case motor has second shaft
             cylinder(r = 4, h = 100, center = true);
 
-        translate([idler_end - z_bar_offset(), 0, 0])
+        translate([idler_end - z_bar_spacing(), 0, 0])
             cylinder(r = 4, h = 100, center = true);
 
 
@@ -583,7 +583,7 @@ module frame_base() {
                 wire_hole(motor_wires_hole_radius);
 
             // Y limit
-            translate([X_origin + Y_bar_spacing / 2 + bar_rail_offset(Y_bar_dia) - bar_clamp_tab / 2,
+            translate([X_origin + Y_bar_spacing / 2 + bar_rail_offset(Y_smooth_rod_diameter) - bar_clamp_tab / 2,
                        Y_front_cable_clip_y - 5, 0])
                 wire_hole(endstop_wires_hole_radius);
 
@@ -632,14 +632,14 @@ module frame_gantry() {
         //
         // Z motor bracket holes
         //
-        for(side = [idler_end - z_bar_offset(), motor_end + z_bar_offset()])
+        for(side = [idler_end - z_bar_spacing(), motor_end + z_bar_spacing()])
             translate([side, 0, Z_motor_length])
                 z_motor_bracket_holes(gantry_setback);
 
         //
         // Z limit switch holes
         //
-        translate([idler_end -z_bar_offset(), gantry_Y, Z0 - x_end_thickness() / 2])
+        translate([idler_end -z_bar_spacing(), gantry_Y, Z0 - x_end_thickness() / 2])
             z_limit_screw_positions()
                 frame_screw_hole();
         //

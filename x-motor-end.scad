@@ -80,10 +80,10 @@ module z_linear_bearings(motor_end) {
 
 wall = thick_wall;                          // 4mm on Mendel and Sturdy, 3mm on Huxley
 width = x_bar_spacing();
-back = -ceil(z_bar_offset() + Z_nut_radius + wall);
+back = -ceil(z_bar_spacing() + Z_nut_radius + wall);
 front = -(Z_smooth_rod_diameter / 2 + 1);
 length = front - back;
-thickness = X_bar_dia + 2 * wall;
+thickness = X_smooth_rod_diameter + 2 * wall;
 
 clamp_wall = default_wall;                  // 4mm on Sturdy, 3mm on Mendel and Huxley
 nut_flat_radius = nut_radius * cos(30);
@@ -118,7 +118,7 @@ switch_op_z = x_carriage_offset() - x_carriage_thickness() / 2; // hit the edge 
 sbracket_top = switch_op_z + 12;
 sbracket_height = sbracket_top + thickness / 2;
 sbracket_depth = switch_op_x - 3 - front;
-sbracket_thickness = bar_y - (X_bar_dia / 2) * sin(45) - bearing_width / 2 - 1.5 - microswitch_thickness();
+sbracket_thickness = bar_y - (X_smooth_rod_diameter / 2) * sin(45) - bearing_width / 2 - 1.5 - microswitch_thickness();
 sbracket_y = -bearing_width / 2 - 1 - sbracket_thickness / 2;
 
 function x_motor_offset() = back - mbracket_thickness - motor_w / 2;
@@ -171,7 +171,7 @@ module x_end_bracket(motor_end, assembly = false){
                 //
                 // Anti-backlash nut holder
                 //
-                translate([-z_bar_offset(), 0, thickness / 2 - eta])
+                translate([-z_bar_spacing(), 0, thickness / 2 - eta])
                     cylinder(r = anti_backlash_radius + anti_backlash_wall, h = anti_backlash_height() - thickness / 2, $fn = 6);
 
                 //
@@ -251,10 +251,10 @@ module x_end_bracket(motor_end, assembly = false){
             //
             // Hole for z leadscrew
             //
-            translate([-z_bar_offset(), 0, -thickness / 2])
-                nut_trap((Z_screw_dia + 1) / 2, Z_nut_radius, Z_nut_depth);
+            translate([-z_bar_spacing(), 0, -thickness / 2])
+                nut_trap((Z_screw_diameter + 1) / 2, Z_nut_radius, Z_nut_depth);
 
-            translate([-z_bar_offset(), 0, thickness / 2 + eta])
+            translate([-z_bar_spacing(), 0, thickness / 2 + eta])
                 cylinder(r = anti_backlash_radius, h = bearing_height, $fn = 6);
 
             for(side = [-1, 1]) {
@@ -265,7 +265,7 @@ module x_end_bracket(motor_end, assembly = false){
                     translate([0, 0, thickness / 2])
                         cube([length + 1, slit, thickness + 1], center = true);
                     rotate([90, 0, 90])
-                        teardrop_plus(r = X_bar_dia / 2, h = length + 1, center = true, truncate = false);
+                        teardrop_plus(r = X_smooth_rod_diameter / 2, h = length + 1, center = true, truncate = false);
                 }
             }
             //
@@ -282,8 +282,8 @@ module x_end_bracket(motor_end, assembly = false){
         //
         // support membrane
         //
-        translate([-z_bar_offset(), 0, Z_nut_depth + layer_height / 2 - thickness / 2 + eta])
-            cylinder(r = (Z_screw_dia + 2) /2, h = layer_height, center = true);
+        translate([-z_bar_spacing(), 0, Z_nut_depth + layer_height / 2 - thickness / 2 + eta])
+            cylinder(r = (Z_screw_diameter + 2) /2, h = layer_height, center = true);
 
         if(motor_end) {
              difference() {
@@ -453,7 +453,7 @@ module x_end_bracket(motor_end, assembly = false){
 
                 translate([back - idler_width / 2, -bar_y, 0])
                     rotate([90, 0, 90])
-                        teardrop(r = X_bar_dia / 2 + 0.5, h = idler_width + 1, center = true);
+                        teardrop(r = X_smooth_rod_diameter / 2 + 0.5, h = idler_width + 1, center = true);
 
                 translate([x_idler_offset(), idler_back, 0])
                     rotate([90, 0, 0])

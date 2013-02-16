@@ -55,7 +55,7 @@ Y_carriage = DiBond;
 X_belt = T2p5x6;
 Y_belt = T2p5x6;
 motor_shaft = 5;
-Z_screw_dia = 6;            // Studding for Z axis
+Z_screw_diameter = 6;            // Studding for Z axis
 
 Y_carriage_depth = bed_holes + 7;
 Y_carriage_width = bed_holes + 7;

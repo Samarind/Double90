@@ -19,7 +19,7 @@ module cal_stl() {
                 cylinder(r = 10, h = 15);
         }
         translate([10,10,15])
-            nut_trap(Z_screw_dia / 2, Z_nut_radius, Z_nut_depth);
+            nut_trap(Z_screw_diameter / 2, Z_nut_radius, Z_nut_depth);
 
         translate([5,30,5])
             rotate([0,0,90])

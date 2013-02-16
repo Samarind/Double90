@@ -55,13 +55,11 @@ Y_carriage = DiBond;
 X_belt = T2p5x6;
 Y_belt = T2p5x6;
 
-motor_shaft = 5;
-
 Y_carriage_depth = bed_holes + 7;
 Y_carriage_width = bed_holes + 7;
 
 //Parameters of Z threaded rod
-Z_screw_dia = 8;                // Threaded rod Studding for Z axis
+Z_screw_diameter = 8;                // Threaded rod Studding for Z axis
 Z_nut_radius = M8_nut_radius;
 Z_nut_depth = M8_nut_depth;
 Z_nut = M8_nut;

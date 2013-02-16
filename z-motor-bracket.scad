@@ -20,7 +20,7 @@ smooth_rod_clamp_slot_width = 1.5;
 
 clamp_width = Z_smooth_rod_diameter + 2 * clamp_thickness;
 
-clamp_x = z_bar_offset() + clamp_length - bar_clamp_tab / 2;
+clamp_x = z_bar_spacing() + clamp_length - bar_clamp_tab / 2;
 
 module z_motor_bracket(y_offset) {
     width = y_offset + (length / 2);
@@ -54,13 +54,13 @@ module z_motor_bracket(y_offset) {
                 difference() {
                     union() {
                     // Z-rod clamp body
-                    translate([z_bar_offset() + clamp_length / 2, 0, clamp_height / 2])
+                    translate([z_bar_spacing() + clamp_length / 2, 0, clamp_height / 2])
                         cube([clamp_length, clamp_width, clamp_height], center = true);
-                    translate([z_bar_offset(), 0, clamp_height / 2])
+                    translate([z_bar_spacing(), 0, clamp_height / 2])
                         cylinder(h = clamp_height, r = Z_smooth_rod_diameter / 2 + clamp_thickness, center = true);
                     }
                     // Hole for Z-rod
-                    translate([z_bar_offset(), 0, clamp_height / 2 + thickness])
+                    translate([z_bar_spacing(), 0, clamp_height / 2 + thickness])
                        poly_cylinder(r = Z_smooth_rod_diameter / 2, h = 2 * clamp_height, center = true); 
                 }
             }

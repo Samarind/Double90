@@ -15,7 +15,7 @@ use <tube_cap.scad>
 tube_cap_pitch = (tube_height(AL_square_tube) + 1);
 
 module small_bits_stl() {
-    translate([-Z_screw_dia/2 - 6, Z_screw_dia/ 2 + 12, 0])
+    translate([-Z_screw_diameter/2 - 6, Z_screw_diameter/ 2 + 12, 0])
         wades_gear_spacer_stl();
 
     translate([z_screw_pointer_radius() + 1, -z_screw_pointer_radius(), 0])

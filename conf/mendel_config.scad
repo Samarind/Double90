@@ -56,7 +56,7 @@ X_belt = T5x6;
 Y_belt = T5x6;
 
 motor_shaft = 5;
-Z_screw_dia = 8;            // Studding for Z axis
+Z_screw_diameter = 8;            // Studding for Z axis
 
 Y_carriage_depth = bed_holes + 8;
 Y_carriage_width = bed_holes + 8;

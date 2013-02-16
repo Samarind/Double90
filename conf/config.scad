@@ -1,8 +1,8 @@
-// //
-// // My
-// //
-// // Configuration file
-// //
+//
+// My
+//
+// Configuration file
+//
 bom = 0;                        // 0 no bom, 1 assemblies and stls, 2 vitamins as well
 
 show_jigs = true;               // show printed jigs required to build the machine
@@ -115,7 +115,7 @@ Y_carriage_clearance = 2 + bulldog_handle_length(small_bulldog) - (Y_carriage_wi
 Z_clearance = 10;                       // How close the top of the object gets to the gantry
 belt_clearance = 0.2;                   // clearance of belt clamp slots
 
-X_bar_dia = X_bearings[2];      // rod sizes to match the bearings
+X_smooth_rod_diameter = X_bearings[2];      // rod sizes to match the bearings
 Y_bar_dia = Y_bearings[2];
 Z_smooth_rod_diameter = Z_bearings[2];
 
@@ -136,7 +136,8 @@ module wire_hole_or_slot(r) {
 }
 
 //Vertical X standard 
-function z_bar_offset() = 30; //round(NEMA_width(Z_motor)) / 2;
+function z_bar_spacing() = 30; //round(NEMA_width(Z_motor)) / 2;
+function x_bar_spacing() = 70;//hole + bearing_holder_width(X_bearings);
 
 base_screw = sheet_is_soft(base) ? frame_soft_screw : (base_nuts ? frame_thin_screw : frame_thick_screw);
 base_nut = base_nuts ? screw_nut(base_screw) : false;
@@ -172,8 +173,8 @@ frame_screw_length = frame_nuts ? screw_longer_than(
                                       + 2 * washer_thickness(frame_washer)
                                   );
 
-echo("base screw length", base_screw_length);
-echo("frame screw length",frame_screw_length);
+// echo("base screw length", base_screw_length);
+// echo("frame screw length",frame_screw_length);
 
 
 

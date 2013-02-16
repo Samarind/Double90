@@ -33,7 +33,6 @@ bar_offset = ceil(max(X_bearings[2] / 2 + rim_thickness + 1,                    
 mounting_holes = [[-25, 0], [25, 0], /*[57, 7]*/];
 
 function x_carriage_offset() = bar_offset;
-function x_bar_spacing() = hole + bearing_holder_width(X_bearings);
 function x_carriage_width() = width;
 function x_carriage_length() = length;
 function x_carriage_thickness() = rim_thickness;
@@ -494,7 +493,7 @@ module x_carriage_stl(){
                             }
                             // ribs between bearing holders
                             for(side = [-1,1])
-                                assign(rib_height = bar_offset - X_bar_dia / 2 - 2)
+                                assign(rib_height = bar_offset - X_smooth_rod_diameter / 2 - 2)
                                 translate([0, - bar_y + side * (bearing_holder_width(X_bearings) / 2 - (wall + eta) / 2), rib_height / 2 - top_thickness + eta])
                                     cube([2 * bar_x - bearing_holder_length(X_bearings) + eta, wall + eta, rib_height], center = true);
 
