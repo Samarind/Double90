@@ -6,14 +6,52 @@
 // hydraraptor.blogspot.com
 //
 // Washers
-//
-M2p5_nut    = [2.5, 5.8,    2.2, 3.8,  M2p5_washer,   M2p5_nut_trap_depth];
-M3_nut      = [3,   6.4,    2.4, 4,    M3_washer,     M3_nut_trap_depth];
-M4_nut      = [4,   8.1,    3.2, 5,    M4_washer,     M4_nut_trap_depth];
-M5_nut      = [5,   9.2,    4,   6.25, M5_washer,     M5_nut_depth];
-M6_nut      = [6,   11.5,   5,   8,    M6_washer,     M6_nut_depth];
-M6_half_nut = [6,   11.5,   3,   8,    M6_washer,     3];
-M8_nut      = [8,   15,     6.5, 8,    M8_washer,     M8_nut_depth];
+//            Inner diameter   Width Across Corners    Hex thickness  Nyloc thickness    Nut washer     Nut trap depth
+M2p5_nut    = [2.5,             5.8,                    2.2,          3.8,               M2p5_washer,   M2p5_nut_trap_depth];
+M3_nut      = [3,               6.4,                    2.4,          4,                 M3_washer,     M3_nut_trap_depth];
+M4_nut      = [4,               8.1,                    3.2,          5,                 M4_washer,     M4_nut_trap_depth];
+M5_nut      = [5,               9.2,                      4,          6.25,              M5_washer,     M5_nut_depth];
+M6_nut      = [6,               11.5,                     5,          8,                 M6_washer,     M6_nut_depth];
+M6_half_nut = [6,               11.5,                     3,          8,                 M6_washer,     3];
+M8_nut      = [8,               15,                     6.5,          8,                 M8_washer,     M8_nut_depth];
+M10_nut     = [10,              19.6,                     8,         10,                 M10_washer,    M10_nut_depth];
+TR10x2_nut  = [10,              19.6,                    15,         10,                 M10_washer,    M10_nut_depth];
+
+//                 Inner diameter   Flange diameter    Flange thickness  Barrel diameter  Barrel thickness   Holes distance     Holes diameter
+TR10x2_flanged_nut  = [10,                 42,                10,               25,            15,              34,                   4];
+
+function flanged_nut_hole_radius(type) = type[6] / 2;
+function flanged_nut_barrel_radius(type) = type[3] / 2;
+function flanged_nut_barrel_thickness(type) = type[4];
+function flanged_nut_hole_distance_radius(type) = type[5] / 2;
+function flanged_nut_position(type) = type[4] / 2 - type[2];
+function flanged_nut_thickness(type) = type[4] + type[2];
+
+module flanged_nut(type) {
+    inner_radius = type [0] / 2;
+    flange_radius = type[1] / 2;
+    flange_thickness = type[2];
+    barrel_radius = type[3] / 2;
+    barrel_thickness = type[4];
+    hole_distance_radius = type[5] / 2;
+    hole_radius = type[6] / 2;
+    difference() {
+        union() {
+            translate ([0, 0, - barrel_thickness / 2])
+                cylinder (r = flange_radius, h = flange_thickness, $fn = 50, center = true);
+            cylinder (r = barrel_radius, h = flange_thickness + barrel_thickness, $fn = 50, center = true);
+        }
+        cylinder (r = inner_radius, h = flange_thickness + barrel_thickness + 0.1, $fn = 50, center = true);
+        for(rot = [0, 60, 120]) {
+            rotate([0, 0, rot]) {
+                translate ([hole_distance_radius, 0, - barrel_thickness / 2])
+                    #cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
+                translate ([-hole_distance_radius, 0, - barrel_thickness / 2])
+                    #cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
+            }
+        }   
+    }
+}
 
 function nut_radius(type) = type[1] / 2;
 function nut_flat_radius(type) = nut_radius(type) * cos(30);

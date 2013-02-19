@@ -4,11 +4,12 @@
 // Configuration file
 //
 bom = 0;                        // 0 no bom, 1 assemblies and stls, 2 vitamins as well
+exploded = 0;
 
 show_jigs = true;               // show printed jigs required to build the machine
 show_support = true;            // show support structures, must be set when generating STLs
 
-// // Real-world colors for various parts & vitamins
+// Real-world colors for various parts & vitamins
 use_realistic_colors = false;    // true for "real" colors, false for "distinct" colors (useful during design and for build instructions)
 printed_plastic_color = "blue";
 cable_strip_real_color = "fuchsia";
@@ -19,9 +20,9 @@ eta = 0.01;                     // small fudge factor to stop CSG barfing on coi
 $fa = 5;
 $fs = 0.5;
 
-// //
-// // Hole sizes
-// //
+//
+// Hole sizes
+//
 No2_pilot_radius = 1.7 / 2;       // self tapper into ABS
 No4_pilot_radius = 2.0 / 2;       // wood screw into soft wood
 No6_pilot_radius = 2.0 / 2;       // wood screw into soft wood
@@ -59,8 +60,18 @@ M8_clearance_radius = 8.4 / 2;
 M8_nut_radius = 15.4 / 2;
 M8_nut_depth = 6.5;
 
+M10_tap_radius = 8.2 / 2;
+M10_clearance_radius = 10.4 / 2;
+M10_nut_radius = 20 / 2;
+M10_nut_depth = 8;
+
+// M12_tap_radius = 8.2 / 2;
+// M12_clearance_radius = 10.4 / 2;
+// M12_nut_radius = 22.4 / 2;
+// M12_nut_depth = 10;
+
 cnc_tool_dia = 2.4;
-layer_height = 0.4;
+layer_height = 0.3;
 filament_width = layer_height * 1.5;
 min_wall = 2 * filament_width + eta;
 part_base_thickness = 5;           // The thickness of things screwed to the frame
@@ -95,7 +106,6 @@ base_nuts = false;                  // Need something under the base if using nu
 pulley_type = T5x8_plastic_pulley;
 include <variant.scad>              // this file is generated from the command line parameter to include one of the machine configs
 
-cap_screw = M3_cap_screw;
 screw_clearance_radius = screw_clearance_radius(cap_screw);
 nut = screw_nut(cap_screw);
 nut_radius = nut_radius(nut);

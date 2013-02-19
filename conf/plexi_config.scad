@@ -59,10 +59,11 @@ Y_carriage_depth = bed_holes + 7;
 Y_carriage_width = bed_holes + 7;
 
 //Parameters of Z threaded rod
-Z_screw_diameter = 8;                // Threaded rod Studding for Z axis
-Z_nut_radius = M8_nut_radius;
-Z_nut_depth = M8_nut_depth;
-Z_nut = M8_nut;
+Z_screw_diameter = 10;                // Threaded rod Studding for Z axis
+Z_nut_radius = M10_nut_radius;
+Z_nut_depth = M10_nut_depth;
+Z_nut = M10_nut;
+Z_flanged_nut = TR10x2_flanged_nut;
 
 //
 // Default screw use where size doesn't matter
