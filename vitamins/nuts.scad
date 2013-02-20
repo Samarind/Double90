@@ -6,72 +6,87 @@
 // hydraraptor.blogspot.com
 //
 // Washers
-//            Inner diameter   Width Across Corners    Hex thickness  Nyloc thickness    Nut washer     Nut trap depth
-M2p5_nut    = [2.5,             5.8,                    2.2,          3.8,               M2p5_washer,   M2p5_nut_trap_depth];
-M3_nut      = [3,               6.4,                    2.4,          4,                 M3_washer,     M3_nut_trap_depth];
-M4_nut      = [4,               8.1,                    3.2,          5,                 M4_washer,     M4_nut_trap_depth];
-M5_nut      = [5,               9.2,                      4,          6.25,              M5_washer,     M5_nut_depth];
-M6_nut      = [6,               11.5,                     5,          8,                 M6_washer,     M6_nut_depth];
-M6_half_nut = [6,               11.5,                     3,          8,                 M6_washer,     3];
-M8_nut      = [8,               15,                     6.5,          8,                 M8_washer,     M8_nut_depth];
-M10_nut     = [10,              19.6,                     8,         10,                 M10_washer,    M10_nut_depth];
-TR10x2_nut  = [10,              19.6,                    15,         10,                 M10_washer,    M10_nut_depth];
+//            Hex   Inner diameter   Width Across Corners    Hex thickness  Nyloc thickness    Nut washer     Nut trap depth
+M2p5_nut    = [true,    2.5,             5.8,                    2.2,          3.8,               M2p5_washer,   M2p5_nut_trap_depth];
+M3_nut      = [true,    3,               6.4,                    2.4,          4,                 M3_washer,     M3_nut_trap_depth];
+M4_nut      = [true,    4,               8.1,                    3.2,          5,                 M4_washer,     M4_nut_trap_depth];
+M5_nut      = [true,    5,               9.2,                      4,          6.25,              M5_washer,     M5_nut_depth];
+M6_nut      = [true,    6,               11.5,                     5,          8,                 M6_washer,     M6_nut_depth];
+M6_half_nut = [true,    6,               11.5,                     3,          8,                 M6_washer,     3];
+M8_nut      = [true,    8,               15,                     6.5,          8,                 M8_washer,     M8_nut_depth];
+M10_nut     = [true,    10,              19.6,                     8,         10,                 M10_washer,    M10_nut_depth];
+TR10x2_nut  = [true,    10,              21,                      15,         10,                 M10_washer,    TR10_nut_depth];
 
-//                 Inner diameter   Flange diameter    Flange thickness  Barrel diameter  Barrel thickness   Holes distance     Holes diameter
-TR10x2_flanged_nut  = [10,                 42,                10,               25,            15,              34,                   4];
+//                      Hex     Flanged    Inner diameter   Barrel diameter  Barrel thickness   Flange diameter    Flange thickness     Holes distance     Holes diameter
+TR10x2_round_nut    = [false,   false,        10,                22,              15];
+TR10x2_flanged_nut  = [false,   true,         10,                25,              15,                 42,                10,                 34,                 4];
 
-function flanged_nut_hole_radius(type) = type[6] / 2;
+function is_hex(type) = type[0];
+function is_flanged(type) = type[1];
+
+function leadscrew_diameter(type) = is_hex(type) ? type[1] : type[2];
+
+function nonhex_nut_thickness(type) = type[4];
+function nonhex_nut_radius(type) = type[3] / 2;
+function flanged_nut_hole_radius(type) = type[8] / 2;
 function flanged_nut_barrel_radius(type) = type[3] / 2;
+function flanged_nut_hole_distance_radius(type) = type[7] / 2;
 function flanged_nut_barrel_thickness(type) = type[4];
-function flanged_nut_hole_distance_radius(type) = type[5] / 2;
-function flanged_nut_position(type) = type[4] / 2 - type[2];
-function flanged_nut_thickness(type) = type[4] + type[2];
+function flanged_nut_flange_thickness(type) = type[6];
+function flanged_nut_mounting_hole_radius(type) = type[8] / 2;
+
+function nut_outer_radius(type) = is_hex(type) ? nut_radius(type) : nonhex_nut_radius(type);
+function nut_depth(type) = is_hex(type) ? nut_thickness(type) : nonhex_nut_thickness(type);
 
 module flanged_nut(type) {
-    inner_radius = type [0] / 2;
-    flange_radius = type[1] / 2;
-    flange_thickness = type[2];
-    barrel_radius = type[3] / 2;
-    barrel_thickness = type[4];
-    hole_distance_radius = type[5] / 2;
-    hole_radius = type[6] / 2;
+    inner_radius = type[2] / 2;
+    flange_radius = type[5] / 2;
+    flange_thickness = type[6];
+    barrel_radius = nonhex_nut_radius(type);
+    barrel_thickness = flanged_nut_barrel_thickness(type);
+    hole_distance_radius = flanged_nut_hole_distance_radius(type);
+    hole_radius = type[8] / 2;
     difference() {
         union() {
+            // Flange
             translate ([0, 0, - barrel_thickness / 2])
                 cylinder (r = flange_radius, h = flange_thickness, $fn = 50, center = true);
+            // Barrel
             cylinder (r = barrel_radius, h = flange_thickness + barrel_thickness, $fn = 50, center = true);
         }
+        // Inner hole
         cylinder (r = inner_radius, h = flange_thickness + barrel_thickness + 0.1, $fn = 50, center = true);
+        // Mounting holes
         for(rot = [0, 60, 120]) {
             rotate([0, 0, rot]) {
                 translate ([hole_distance_radius, 0, - barrel_thickness / 2])
-                    #cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
+                    cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
                 translate ([-hole_distance_radius, 0, - barrel_thickness / 2])
-                    #cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
+                    cylinder (r = hole_radius, h = 4 * barrel_thickness + 0.1, $fn = 50, center = true);
             }
         }   
     }
 }
 
-function nut_radius(type) = type[1] / 2;
+function nut_radius(type) = type[2] / 2;
 function nut_flat_radius(type) = nut_radius(type) * cos(30);
-function nut_thickness(type, nyloc = false) = nyloc ? type[3] : type[2];
-function nut_washer(type) = type[4];
-function nut_trap_depth(type) = type[5];
+function nut_thickness(type, nyloc = false) = nyloc ? type[4] : type[3];
+function nut_washer(type) = type[5];
+function nut_trap_depth(type) = type[6];
 
 module nut(type, nyloc = false, brass = false) {
-    hole_rad  = type[0] / 2;
+    hole_rad  = type[1] / 2;
     outer_rad = nut_radius(type);
     thickness = nut_thickness(type);
-    nyloc_thickness = type[3];
+    nyloc_thickness = type[4];
 
     if(nyloc)
-        vitamin(str("NYLOCM", type[0], ": Nyloc nut M", type[0]));
+        vitamin(str("NYLOCM", type[1], ": Nyloc nut M", type[1]));
     else
         if(brass)
-            vitamin(str("NUTBM", type[0], ": Brass nut M", type[0]));
+            vitamin(str("NUTBM", type[1], ": Brass nut M", type[1]));
         else
-            vitamin(str("NUTM", type[0], ": Nut M", type[0]));
+            vitamin(str("NUTM", type[1], ": Nut M", type[1]));
 
     if(exploded && nyloc)
         cylinder(r = 0.2, h = 10);

@@ -65,6 +65,8 @@ M10_clearance_radius = 10.4 / 2;
 M10_nut_radius = 20 / 2;
 M10_nut_depth = 8;
 
+TR10_nut_depth = 15;
+
 // M12_tap_radius = 8.2 / 2;
 // M12_clearance_radius = 10.4 / 2;
 // M12_nut_radius = 22.4 / 2;
