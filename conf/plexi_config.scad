@@ -59,7 +59,7 @@ Y_carriage_depth = bed_holes + 7;
 Y_carriage_width = bed_holes + 7;
 
 //Parameters of Z leadscrew
-Z_nut = TR10x2_flanged_nut;//TR10x2_round_nut;
+Z_nut = TR10x2_round_nut;//TR10x2_round_nut;
 Z_screw_diameter = leadscrew_diameter(Z_nut);
 Z_nut_radius = nut_outer_radius(Z_nut);
 Z_nut_depth = nut_depth(Z_nut);
