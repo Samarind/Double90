@@ -27,7 +27,7 @@ base_length = z_bar_spacing() ;
 
 nut_flat_radius = nut_radius * cos(30);
 clamp_width = 2 * (nut_radius + wall);
-clamp_length = 22;
+clamp_length = 30;
 clamp_thickness = X_rod_holder_width / 2;
 slit = 2;
 
@@ -50,24 +50,28 @@ module x_end_bracket() {
                     cube([Z_bearing_depth, Z_bearing_holder_width, Z_bearings_holder_height], center = true);
 
                 // Bottom base
-                translate([-Z_bearing_depth - base_length / 2, 0, base_thickness / 2])
+                *translate([-Z_bearing_depth - base_length / 2, 0, base_thickness / 2])
                     cube([base_length + eta, Z_bearing_holder_width, base_thickness ], center = true);    
 
-                *if (is_hex(Z_nut)) {
+                if (is_hex(Z_nut)) {
                     // Anti-backlash nut holder
                     translate([-z_bar_spacing(), 0, anti_backlash_wall_height / 2])
                        rotate([0, 0, 90])                    
                             cylinder(r = anti_backlash_wall_radius + anti_backlash_wall_width, h = anti_backlash_wall_height, $fn = 6, center = true);
-                } else {
+                } else if (is_flanged(Z_nut)) {
 
+
+                } else {
+                    translate([-z_bar_spacing(), 0, x_bar_spacing() / 2 + nut_depth(Z_nut)])
+                        #cylinder(r = nut_outer_radius(Z_nut) + anti_backlash_wall_width, h = 2 * nut_depth(Z_nut) + 0.2 + wall, $fn = 50, center = true);
                 }
 
                 //Support wall
-                translate([-Z_bearing_depth - washer_diameter(washer), Z_bearing_holder_width / 2 - wall / 2, x_bar_spacing() / 2 + clamp_thickness])
+                translate([-Z_bearing_depth / 2 - 10, Z_bearing_holder_width / 2 - wall / 2, x_bar_spacing() / 2 + clamp_thickness])
                         cube([clamp_length, wall, x_bar_spacing() - X_rod_holder_width], center = true);
 
                 //Support wall 2
-                translate([-Z_bearing_depth - washer_diameter(washer), Z_bearing_holder_width / 2 + Z_smooth_rod_diameter + wall / 2 , x_bar_spacing() / 2 + clamp_thickness])
+                translate([-Z_bearing_depth / 2 - 10, Z_bearing_holder_width / 2 + Z_smooth_rod_diameter + wall / 2 , x_bar_spacing() / 2 + clamp_thickness])
                         cube([clamp_length, wall, x_bar_spacing()], center = true);
 
 
@@ -83,7 +87,7 @@ module x_end_bracket() {
 
                 // X rods holders
                 for (second = [0, x_bar_spacing()]) {
-                    translate([-Z_bearing_depth - washer_diameter(washer), X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 , clamp_thickness + second]) {
+                    translate([-Z_bearing_depth / 2 - 10, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 , clamp_thickness + second]) {
                         difference() {
                             union() {
                                 rotate([90, 0, 90])
@@ -138,15 +142,15 @@ module x_end_bracket() {
 
             // Bar clamps nut traps
             for (second = [0, x_bar_spacing()]) {
-                translate([-Z_bearing_depth - washer_diameter(washer), X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 - wall , clamp_thickness + second]) {
+                translate([-Z_bearing_depth / 2 - 10, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 - wall , clamp_thickness + second]) {
                         translate([0, (- slit / 2 - clamp_thickness / 2 - nut_trap_depth / 2  - wall / 2 - eta), base_thickness / 2 + washer_diameter(washer) / 2 + wall / 2])
-                            rotate([90,0,0])
+                            rotate([90,90,0])
                                 nut_trap(screw_clearance_radius, nut_radius, nut_trap_depth + wall + eta, true);
                 }
             }
 
             // Slits for bottom clamp
-            translate([-Z_bearing_depth - washer_diameter(washer), X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 + 1.5 * wall, clamp_thickness + base_thickness / 2 + wall - X_smooth_rod_diameter / 4]) { 
+            translate([-Z_bearing_depth / 2 - 10, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 + 1.5 * wall, clamp_thickness + base_thickness / 2 + wall - X_smooth_rod_diameter / 4]) { 
                 translate([clamp_length / 4, 0, 0])
                     rotate([0, 0, 90])
                         cube([clamp_thickness / 2 + 2 * wall, 0.5, 1.5 * X_smooth_rod_diameter], center = true);
@@ -167,8 +171,7 @@ module x_end_bracket() {
                 // Hex nut
                 translate([-z_bar_spacing(), 0, base_thickness / 2])
                     cylinder(r = anti_backlash_wall_radius, h = base_thickness + eta, $fn = 6, center = true);
-            } else {
-                if (is_flanged(Z_nut)) {
+            } else if (is_flanged(Z_nut)) {
                     //Flanged nut
                     translate([-z_bar_spacing(), 0, 0])
                         poly_cylinder(r = nut_outer_radius(Z_nut) + 0.2, h = nut_depth(Z_nut) + eta, $fn = 50);
@@ -182,12 +185,15 @@ module x_end_bracket() {
                                 poly_cylinder (r = flanged_nut_mounting_hole_radius(Z_nut), h = 2 * flanged_nut_barrel_thickness(Z_nut) + 0.1, center = true);
                         }           
                     }
-                } else {
-                    //Round nut
-                    translate([-z_bar_spacing(), 0, -0.1])
-                        poly_cylinder(r = nut_outer_radius(Z_nut) + 0.2, h = nut_depth(Z_nut) + eta, $fn = 50);
+            } else {
+                //Round nut
+                translate([-z_bar_spacing(), 0, x_bar_spacing() / 2 + nut_depth(Z_nut) / 2]) {
+                    poly_cylinder(r = nut_outer_radius(Z_nut) + 0.2, h = nut_depth(Z_nut) + 0.2 + eta, $fn = 50, center = true);
+                    translate([0,-nut_outer_radius(Z_nut) - 0.1, 0])
+                        cube([2 * nut_outer_radius(Z_nut) + 0.5, 2 * nut_outer_radius(Z_nut), nut_depth(Z_nut) + 0.2 + eta], center = true);
                 }
             }
+            
 
             //Hole for Z bearings
             translate([0, 0, -1])
@@ -215,21 +221,25 @@ module x_end_assembly() {
         rod(Z_smooth_rod_diameter, 200);
     
     // Z leadscrew nut
-    *if (is_hex(Z_nut)) {
+    if (is_hex(Z_nut)) {
             // Hex nut
         } else {
             if (is_flanged(Z_nut)) {
                 // Round flanged nut
-                translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - flanged_nut_flange_thickness(Z_nut) / 2 - 0.1])
-                    rotate([0,0,23])
+                translate([-z_bar_spacing(), 0, /*nut_depth(Z_nut) / 2 - flanged_nut_flange_thickness(Z_nut) / 2 - 0.1*/ 100])
+                    rotate([0, 180, 20])
                         flanged_nut(Z_nut);
             } else {
                 // Round nut
+                *translate([-z_bar_spacing(), 0, 50])
+                    round_nut(Z_nut, brass = true, center = true);
             }
         }
 
     // Spectra line bearing
-    translate([-Z_bearing_depth - washer_diameter(washer), X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, x_bar_spacing() / 2 + clamp_thickness]) {
+    translate([-Z_bearing_depth / 2 - 10, 
+                X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 + 3, 
+                x_bar_spacing() / 2 + clamp_thickness]) {
         rotate([0,90,90])
             ball_bearing(BB624);
     }

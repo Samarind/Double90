@@ -74,6 +74,21 @@ function nut_thickness(type, nyloc = false) = nyloc ? type[4] : type[3];
 function nut_washer(type) = type[5];
 function nut_trap_depth(type) = type[6];
 
+module round_nut(type, brass = false) {
+    hole_rad  = type[2] / 2;
+    outer_rad = nonhex_nut_radius(type);
+    thickness = nonhex_nut_thickness(type);
+
+    color(brass ? brass_nut_color : nut_color) render() 
+    difference() {
+        union() {
+            cylinder(r = outer_rad, h = thickness, $fn = 50);
+        }
+        translate([0, 0, -1])
+            cylinder(r = hole_rad, h = thickness + 2);
+    }
+}
+
 module nut(type, nyloc = false, brass = false) {
     hole_rad  = type[1] / 2;
     outer_rad = nut_radius(type);

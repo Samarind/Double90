@@ -3,7 +3,7 @@
 //
 include <conf/config.scad>
 include <positions.scad>
-// use <z-coupling.scad> 
+use <z-coupling.scad> 
 
 rounded_corner_radius = 5;
 thickness = 5;
@@ -13,12 +13,12 @@ back_thickness = part_base_thickness + (frame_nut_traps ? nut_trap_depth(frame_n
 back_height = 24;
 big_motor_hole = NEMA_big_hole(Z_motor);
 clamp_height = washer_diameter(washer) + 4;
-clamp_thickness = bar_clamp_band;
+Z_clamp_thickness = bar_clamp_band;
 clamp_screw_clearance = 2;
 clamp_length = Z_smooth_rod_diameter / 2 + bar_clamp_tab - 2;
 smooth_rod_clamp_slot_width = 1.5;
 
-clamp_width = Z_smooth_rod_diameter + 2 * clamp_thickness;
+clamp_width = Z_smooth_rod_diameter + 2 * Z_clamp_thickness;
 
 clamp_x = z_bar_spacing() + clamp_length - bar_clamp_tab / 2;
 
@@ -57,7 +57,7 @@ module z_motor_bracket(y_offset) {
                     translate([z_bar_spacing() + clamp_length / 2, 0, clamp_height / 2])
                         cube([clamp_length, clamp_width, clamp_height], center = true);
                     translate([z_bar_spacing(), 0, clamp_height / 2])
-                        cylinder(h = clamp_height, r = Z_smooth_rod_diameter / 2 + clamp_thickness, center = true);
+                        cylinder(h = clamp_height, r = Z_smooth_rod_diameter / 2 + Z_clamp_thickness, center = true);
                     }
                     // Hole for Z-rod
                     translate([z_bar_spacing(), 0, clamp_height / 2 + thickness])
@@ -78,7 +78,7 @@ module z_motor_bracket(y_offset) {
             translate([(length + 2*x_overhang_over_motor)/2, 0, 0]) 
                 cube([clamp_length, smooth_rod_clamp_slot_width,  clamp_height * 2 + 1], center = true);
             // Clamp screw hole
-            translate([clamp_x, Z_smooth_rod_diameter / 2 + clamp_thickness, clamp_height / 2])
+            translate([clamp_x, Z_smooth_rod_diameter / 2 + Z_clamp_thickness, clamp_height / 2])
                 rotate([90, 0, 0])
                     nut_trap(screw_clearance_radius, nut_radius, nut_trap_depth, horizontal = true);  
             
@@ -111,10 +111,34 @@ module z_motor_bracket(y_offset) {
                     fillet(r = rounded_corner_radius, h = width*2);      
         }
     }
+}
+
+module z_motor_bracket_assembly() {
+    z_motor_bracket(gantry_setback);
 
     //Motor
     NEMA(Z_motor);
 
+    translate([clamp_x, -clamp_width / 2, clamp_height / 2])
+        rotate([90, 0, 0])
+            screw_and_washer(cap_screw, screw_longer_than(clamp_width + washer_thickness(screw_washer(cap_screw))));
+
+    //
+    // Clamp nyloc
+    //
+    translate([clamp_x, clamp_width / 2 - nut_trap_depth, clamp_height / 2])
+        rotate([-90, 0, 0])
+            nut(nut, true);
+
+    //NEMA(Z_motor);
+    translate([0,0, thickness])
+        NEMA_screws(Z_motor);
+
+    translate([0, 0, NEMA_shaft_length(Z_motor) + 1])
+        rotate([0,0,45])
+            z_coupler_assembly();
+
 }
 
-z_motor_bracket(gantry_setback);
+// z_motor_bracket_assembly();
+
