@@ -37,7 +37,6 @@ shelves = [ shelf_thickness / 2,
             Z_bearings_holder_height - (shelf_thickness + Z_bearing_length + shelf_clearance + shelf_thickness / 2) ];
 
 module x_end_bracket() {
-    color(x_end_bracket_color) {
         // Shelves for bearings
         for(y = shelves)
             translate([-Z_bearing_depth + shelf_depth / 2, 0, y])
@@ -46,28 +45,29 @@ module x_end_bracket() {
         difference() {
             union() {
                 //Main vertical block
-                translate([-Z_bearing_depth / 2, 0, Z_bearings_holder_height / 2])
+                *translate([-Z_bearing_depth / 2, 0, Z_bearings_holder_height / 2])
                     cube([Z_bearing_depth, Z_bearing_holder_width, Z_bearings_holder_height], center = true);
 
                 // Bottom base
                 *translate([-Z_bearing_depth - base_length / 2, 0, base_thickness / 2])
                     cube([base_length + eta, Z_bearing_holder_width, base_thickness ], center = true);    
 
+                // Anti-backlash nut holder
                 if (is_hex(Z_nut)) {
-                    // Anti-backlash nut holder
                     translate([-z_bar_spacing(), 0, anti_backlash_wall_height / 2])
                        rotate([0, 0, 90])                    
                             cylinder(r = anti_backlash_wall_radius + anti_backlash_wall_width, h = anti_backlash_wall_height, $fn = 6, center = true);
                 } else if (is_flanged(Z_nut)) {
 
 
-                } else {
-                    translate([-z_bar_spacing(), 0, x_bar_spacing() / 2 + nut_depth(Z_nut)])
-                        #cylinder(r = nut_outer_radius(Z_nut) + anti_backlash_wall_width, h = 2 * nut_depth(Z_nut) + 0.2 + wall, $fn = 50, center = true);
+                } else { 
+                    translate([-z_bar_spacing(), 0, x_bar_spacing() / 2 + nut_depth(Z_nut) / 2 - wall / 2])
+                     color(grey20)
+                        cylinder(r = nut_outer_radius(Z_nut) + anti_backlash_wall_width, h = nut_depth(Z_nut) + 0.2 + wall, $fn = 50, center = true);
                 }
 
                 //Support wall
-                translate([-Z_bearing_depth / 2 - 10, Z_bearing_holder_width / 2 - wall / 2, x_bar_spacing() / 2 + clamp_thickness])
+                *translate([-Z_bearing_depth / 2 - 10, Z_bearing_holder_width / 2 - wall / 2, x_bar_spacing() / 2 + clamp_thickness])
                         cube([clamp_length, wall, x_bar_spacing() - X_rod_holder_width], center = true);
 
                 //Support wall 2
@@ -76,7 +76,7 @@ module x_end_bracket() {
 
 
                 // Support triangle
-                translate([-Z_bearing_depth + wall/2, (Z_bearing_holder_width) / 2 - wall, Z_bearings_holder_height]) {
+                *translate([-Z_bearing_depth + wall/2, (Z_bearing_holder_width) / 2 - wall, Z_bearings_holder_height]) {
                     rotate([90, 0, -90]) {
                         right_triangle(Z_bearing_holder_width - wall, 25, wall, center = true);
                     }
@@ -163,8 +163,8 @@ module x_end_bracket() {
             }
 
             // Hole for Z leadscrew
-            translate([-z_bar_spacing(), 0, base_thickness / 2])
-                poly_cylinder(r = Z_screw_diameter / 2, h = 2 * base_thickness + eta, $fn = 50, center = true);
+            translate([-z_bar_spacing(), 0, Z_bearings_holder_height / 2])
+                poly_cylinder(r = Z_screw_diameter / 2, h = 2 * Z_bearings_holder_height + eta, $fn = 50, center = true);
 
             //Hole for Z leadscrew nut
             if (is_hex(Z_nut)) {
@@ -205,7 +205,6 @@ module x_end_bracket() {
                     cube([Z_bearing_outer_diameter, Z_bearing_outer_diameter, Z_bearings_holder_height + 1], center = true);
 
         }
-    }
 }
 
 module x_end_assembly() {
