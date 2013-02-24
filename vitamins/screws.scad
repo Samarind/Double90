@@ -48,6 +48,8 @@ function screw_boss_diameter(type) = max(washer_diameter(screw_washer(type)) + 1
 function screw_longer_than(x) = x <= 10 ? 10 :
                                 x <= 12 ? 12 :
                                 x <= 16 ? 16 :
+                                x <= 19 ? 19 :
+                                x <= 25 ? 25 :
                                 ceil(x / 5) * 5;
 
 function screw_shorter_than(x) = x > 20 ? floor(x / 5) * 5 :
