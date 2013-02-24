@@ -67,11 +67,6 @@ M10_nut_depth = 8;
 
 TR10_nut_depth = 15;
 
-// M12_tap_radius = 8.2 / 2;
-// M12_clearance_radius = 10.4 / 2;
-// M12_nut_radius = 22.4 / 2;
-// M12_nut_depth = 10;
-
 cnc_tool_dia = 2.4;
 layer_height = 0.3;
 filament_width = layer_height * 1.5;
@@ -235,3 +230,5 @@ module base_screw_hole() {
 bar_clamp_depth = 4 + washer_diameter(base_washer);           // how thick the bar clamps are
 bar_clamp_tab = 3 + washer_diameter(base_washer);             // how much the lugs stick out
 bar_clamp_band = 3;                                           // the thickness of the strap that clamps the bar.
+
+smooth = 30;
