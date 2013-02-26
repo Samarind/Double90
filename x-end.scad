@@ -47,7 +47,7 @@ module x_end_bracket() {
         difference() {
             union() {
                 // Main vertical block
-                translate([-clamp_length / 2 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, (x_bar_spacing() + base_thickness) / 2])
+                translate([-clamp_length / 2 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, (x_bar_spacing() + base_thickness) / 2]) {
                     difference() {
                         cube([clamp_length, 2 * wall + Z_smooth_rod_diameter, x_bar_spacing() - base_thickness], center = true);
                         translate([0, 0, -Z_smooth_rod_diameter / 2])
@@ -56,6 +56,15 @@ module x_end_bracket() {
                             rotate([90, 0, 90])  
                                 cylinder(h = clamp_length + eta, r = Z_smooth_rod_diameter / 2 - wall / 2, $fn = smooth, center = true);  
                     }
+                    translate([wall, 0, 0])
+                        difference() {
+                            cube([slit, clamp_width, x_bar_spacing() / 3 + wall], center = true);
+                            cube([slit * 2, slit, x_bar_spacing() / 3 + wall], center = true);
+                            translate([0, 0, -(x_bar_spacing() / 3 + wall) / 2])
+                                rotate([90, 0, 90])  
+                                    cylinder(h = slit * 2 + eta, r = Z_smooth_rod_diameter / 2 - wall / 2, $fn = smooth, center = true);
+                        }
+                }
 
                 // Anti-backlash nut holder
                 if (is_hex(Z_nut)) {
@@ -125,10 +134,8 @@ module x_end_bracket() {
                 translate([-clamp_length / 2 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 , clamp_width / 2 + x_bar_spacing()]) {
                     rotate([90, 0, 90])
                        teardrop(r = clamp_width / 2, h = clamp_length, center = true);
-
                     translate([-clamp_length / 2, -clamp_width / 2, -clamp_width / 2])
                         cube([clamp_length, clamp_width, X_smooth_rod_diameter - wall / 2]);   
-
                     rotate([90, 0, 90])
                         linear_extrude(height = clamp_length + eta, center = true)
                         hull() {
@@ -136,7 +143,6 @@ module x_end_bracket() {
                                 square([clamp_width / 4 - 1, 0.1]);
                                 circle(r = clamp_width / 2);
                             }
-
                     translate([0, clamp_width / 8 + slit / 2, base_thickness / 2 + wall])
                         rotate([90, 0, 0])
                             linear_extrude(height = clamp_width / 4, center = true)
@@ -148,7 +154,6 @@ module x_end_bracket() {
                                     translate([0, -rounded_corner_radius, 0])
                                         square([clamp_length, wall], center = true);      
                                 }
-
                     translate([0, -clamp_width / 4, base_thickness / 2 + wall])
                         rotate([90, 0, 0])
                         linear_extrude(height = clamp_width / 2, center = true)
@@ -173,8 +178,8 @@ module x_end_bracket() {
                     
                     translate([0, wall, 0]) {
                         // Slits for X rods clamps
-                        translate([0, 0, base_thickness / 2])
-                            cube([clamp_length * 2, slit, base_thickness * 1.5], center = true);
+                        translate([0, 0, X_smooth_rod_diameter])
+                            cube([clamp_length + 1, slit, x_bar_spacing() / 4], center = true);
 
                         // Holes for X rods
                         rotate([90, 0, 90])
@@ -210,7 +215,7 @@ module x_end_bracket() {
                     translate([-z_bar_spacing(), 0, 0])
                         poly_cylinder(r = nut_outer_radius(Z_nut) + 0.2, h = nut_depth(Z_nut) + eta, $fn = smooth);
                     translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - flanged_nut_flange_thickness(Z_nut) / 2 - 0.1])
-                    rotate([0,0,23]) {
+                    rotate([0, 0, 23]) {
                         flanged_nut(Z_nut);
                         rotate([0, 0, 120]) {
                             translate ([flanged_nut_hole_distance_radius(Z_nut), 0, base_thickness / 2])
@@ -225,15 +230,15 @@ module x_end_bracket() {
                     poly_cylinder(r = nut_outer_radius(Z_nut) + 0.2, h = 2*nut_depth(Z_nut) + 0.2 + eta, $fn = smooth, center = true);
             }
 
-            // Hole for idler screw
-            translate([-clamp_length / 2 - 1, Z_bearing_holder_width / 2 - 2 * wall , (x_bar_spacing() + base_thickness) / 2])
-                rotate([90,90,0])
+            // Hole for spectra line bearing screw
+            translate([-clamp_length * 3 / 4 - 1, Z_bearing_holder_width / 2 - 1.5 * wall, (x_bar_spacing() + base_thickness) / 2])
+                rotate([90, 90, 0])
                     nut_trap(M4_clearance_radius, M4_nut_radius, M4_nut_trap_depth + eta, true);
 
-            // Hole for idler screw
-            translate([-clamp_length / 6 - 1, clamp_width + Z_bearing_holder_width / 2 - 1.5 * wall, (x_bar_spacing() + base_thickness) / 2])
-                rotate([90,90,0])
-                    poly_cylinder(r = M4_clearance_radius, h = wall + eta, center = true);                    
+            // Hole for spectra line fixing screw
+            translate([-clamp_length / 4 - 1, clamp_width / 2 + Z_bearing_holder_width / 2 + wall, (x_bar_spacing() + base_thickness) / 2])
+                rotate([90, 90, 0])
+                    poly_cylinder(r = M4_clearance_radius, h = 2 * wall + eta, center = true);                    
 
             //Hole for Z bearings
             translate([0, 0, -1])
@@ -275,17 +280,17 @@ module x_end_assembly() {
         }
 
     // Spectra line bearing
-    translate([-clamp_length / 2 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, (x_bar_spacing() + base_thickness) / 2])
+    translate([-clamp_length * 3 / 4 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, (x_bar_spacing() + base_thickness) / 2])
         rotate([0, 90, 90]) 
             ball_bearing(BB624);
 
     // Spectra line bearing screw
-    translate([-clamp_length / 2 - 1, clamp_width + Z_bearing_holder_width / 2 - wall, (x_bar_spacing() + base_thickness) / 2])
+    translate([-clamp_length * 3 / 4 - 1, clamp_width + Z_bearing_holder_width / 2 - wall, (x_bar_spacing() + base_thickness) / 2])
         rotate([0, 90, 90]) 
             screw_and_washer(M4_pan_screw, screw_longer_than(clamp_width), center = true);
 
     // Spectra line fixing screw
-    translate([-clamp_length / 6 - 1, clamp_width + Z_bearing_holder_width / 2 - wall, (x_bar_spacing() + base_thickness) / 2])
+    translate([-clamp_length / 4 - 1, clamp_width + Z_bearing_holder_width / 2 - wall, (x_bar_spacing() + base_thickness) / 2])
         rotate([0, 90, 90])
             screw_and_washer(M4_pan_screw, screw_shorter_than(clamp_width), center = true); 
 
