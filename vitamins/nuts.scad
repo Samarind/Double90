@@ -6,7 +6,7 @@
 // hydraraptor.blogspot.com
 //
 // Washers
-//            Hex   Inner diameter   Width Across Corners    Hex thickness  Nyloc thickness    Nut washer     Nut trap depth
+//            Hex   Inner diameter   Width Across Corners    Hex thickness  Nyloc thickness        Nut washer     Nut trap depth
 M2p5_nut    = [true,    2.5,             5.8,                    2.2,          3.8,               M2p5_washer,   M2p5_nut_trap_depth];
 M3_nut      = [true,    3,               6.4,                    2.4,          4,                 M3_washer,     M3_nut_trap_depth];
 M4_nut      = [true,    4,               8.1,                    3.2,          5,                 M4_washer,     M4_nut_trap_depth];
