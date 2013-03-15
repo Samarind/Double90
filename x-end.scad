@@ -85,18 +85,17 @@ module x_end_bracket() {
                 // Rounded inner edge
                 difference() {
                     union() {  
-                     // hull() { 
-                        translate([-Z_bearing_depth + wall / 2 , (Z_bearing_holder_width / 2 - wall) / 2, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
-                            cube([wall, Z_bearing_holder_width / 2 - wall, Z_bearings_holder_height + 2 * X_smooth_rod_diameter], center = true);
-                        translate([-clamp_length / 4 - wall / 2 + 1,0,0]) 
+                     // hull() { -Z_bearing_depth - Z_bearing_holder_width / 4 
+                        *translate([-Z_bearing_depth + wall / 2 , (Z_bearing_holder_width / 2 - wall) / 2, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
+                            #cube([wall, Z_bearing_holder_width / 2 - wall, Z_bearings_holder_height + 2 * X_smooth_rod_diameter], center = true);
                         difference() {
-                            translate([-Z_bearing_depth - (Z_bearing_holder_width / 2 - wall) / 2 , (Z_bearing_holder_width / 2 - wall) / 2, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
-                                cube([Z_bearing_holder_width / 2 - wall, Z_bearing_holder_width / 2 - wall, Z_bearings_holder_height + 2 * X_smooth_rod_diameter], center = true);
+                            translate([- clamp_length / 2 - 1, (Z_bearing_holder_width / 2 - wall) / 2, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
+                                cube([clamp_length, Z_bearing_holder_width / 2 - wall, Z_bearings_holder_height + 2 * X_smooth_rod_diameter], center = true);
 
-                            translate([-Z_bearing_depth - (Z_bearing_holder_width / 2 - wall), 0, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
-                                cylinder(r=Z_bearing_holder_width / 2 - wall, h = Z_bearings_holder_height + 2 * X_smooth_rod_diameter + eta, $fn = smooth, center = true);
+                            translate([-z_bar_spacing() - wall, 0, (Z_bearings_holder_height + 2 * X_smooth_rod_diameter) / 2]) 
+                                cylinder(r = Z_bearing_holder_width / 2 - wall + 1, h = Z_bearings_holder_height + 2 * X_smooth_rod_diameter + eta, $fn = smooth, center = true);
                         }
-                        translate([0, 0, Z_bearings_holder_height + X_smooth_rod_diameter])                      
+                        *translate([0, 0, Z_bearings_holder_height + X_smooth_rod_diameter])                      
                             intersection() {       
                                 translate([-Z_bearing_depth, 0, 0])                      
                                     cube([2 * Z_bearing_depth, Z_bearing_outer_diameter, 2 * X_smooth_rod_diameter], center = true);
@@ -105,18 +104,19 @@ module x_end_bracket() {
                             }
                         // }
                     }
+                    // Big empty cylinder at the top
                     translate([-Z_bearing_depth, -Z_bearing_holder_width / 2 - wall, Z_bearings_holder_height + Z_bearing_holder_width - 1]) 
                         rotate([90, 0, 90])
                             cylinder(h = 2 * Z_bearing_holder_width, r = Z_bearing_holder_width, $fn = smooth, center = true);
                 }
 
                 // Z bearings holder
-                hull() {
+                // hull() {
                     translate([0, 0, Z_bearings_holder_height / 2])
                         cylinder(h = Z_bearings_holder_height, r = Z_bearing_holder_width / 2, $fn = smooth, center = true);
-                    translate([-z_bar_spacing() / 2 + wall, 0, Z_bearings_holder_height / 2])
-                        cylinder(h = Z_bearings_holder_height, r = Z_bearing_holder_width / 2, $fn = smooth, center = true);
-                }
+                //     translate([-z_bar_spacing() / 2 + wall, 0, Z_bearings_holder_height / 2])
+                //         cylinder(h = Z_bearings_holder_height, r = Z_bearing_holder_width / 2, $fn = smooth, center = true);
+                // }
 
                 // Bottom X rod holder
                 translate([-clamp_length / 2 - 1, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 , 0]) {
