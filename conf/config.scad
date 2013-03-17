@@ -65,8 +65,6 @@ M10_clearance_radius = 10.4 / 2;
 M10_nut_radius = 20 / 2;
 M10_nut_depth = 8;
 
-TR10_nut_depth = 15;
-
 cnc_tool_dia = 2.4;
 layer_height = 0.3;
 filament_width = layer_height * 1.5;

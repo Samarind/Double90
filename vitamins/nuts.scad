@@ -15,7 +15,7 @@ M6_nut      = [true,    6,               11.5,                     5,          8
 M6_half_nut = [true,    6,               11.5,                     3,          8,                 M6_washer,     3];
 M8_nut      = [true,    8,               15,                     6.5,          8,                 M8_washer,     M8_nut_depth];
 M10_nut     = [true,    10,              19.6,                     8,         10,                 M10_washer,    M10_nut_depth];
-TR10x2_nut  = [true,    10,              21,                      15,         10,                 M10_washer,    TR10_nut_depth];
+TR10x2_nut  = [true,    10,              21,                      15,         10,                 M10_washer,    15];
 
 //                      Hex     Flanged    Inner diameter   Barrel diameter  Barrel thickness   Flange diameter    Flange thickness     Holes distance     Holes diameter
 TR10x2_round_nut    = [false,   false,        10,                22,              15];
