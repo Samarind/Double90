@@ -1,14 +1,11 @@
 //
-// Mendel90
+// Plexi
 //
 // GNU GPL v2
-// nop.head@gmail.com
-// hydraraptor.blogspot.com
-//
 // Configuration file
 //
-echo("Plexi:");
 
+//Bearings here define diameter of smooth rods
 Z_bearings = LM12UU;
 Y_bearings = LM12UU;
 X_bearings = LM12UU;
