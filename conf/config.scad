@@ -1,7 +1,5 @@
 //
-// My
-//
-// Configuration file
+// File with constants
 //
 bom = 0;                        // 0 no bom, 1 assemblies and stls, 2 vitamins as well
 exploded = 0;
@@ -19,6 +17,13 @@ bulldog_real_color ="black";
 eta = 0.01;                     // small fudge factor to stop CSG barfing on coincident faces.
 $fa = 5;
 $fs = 0.5;
+
+//
+// Feature sizes
+//
+default_wall = 3;
+thick_wall = 4;
+structure_wall = 6;
 
 //
 // Hole sizes

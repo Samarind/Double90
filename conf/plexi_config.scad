@@ -1,9 +1,7 @@
 //
 // Plexi
-//
 // GNU GPL v2
 // Configuration file
-//
 
 //Bearings here define diameter of smooth rods
 Z_bearings = LM12UU;
@@ -14,11 +12,26 @@ X_motor = NEMA23;
 Y_motor = NEMA23;
 Z_motor = NEMA23;
 
+frame_sheets_distance = max(50, NEMA_length(X_motor), NEMA_holes_distance(Z_motor) + 4 * structure_wall);
+z_coupling_height = 30;
+
+//Parameters of Z leadscrew
+Z_nut = TR10x2_round_nut;
+Z_screw_diameter = leadscrew_diameter(Z_nut);
+Z_nut_radius = nut_outer_radius(Z_nut);
+Z_nut_depth = nut_depth(Z_nut);
+
+my_frame_screw = M5_cap_screw;
+small_screw = M3_cap_screw;
+
+
+// UNUSED ---------------------------------------------------------
 hot_end = JHeadMk5;
 
 X_travel = 200;
 Y_travel = 200;
 Z_travel = 200;
+
 
 bed_depth = 214;
 bed_width = 214;
@@ -55,12 +68,6 @@ Y_belt = T2p5x6;
 Y_carriage_depth = bed_holes + 7;
 Y_carriage_width = bed_holes + 7;
 
-//Parameters of Z leadscrew
-Z_nut = TR10x2_round_nut;
-Z_screw_diameter = leadscrew_diameter(Z_nut);
-Z_nut_radius = nut_outer_radius(Z_nut);
-Z_nut_depth = nut_depth(Z_nut);
-
 //
 // Default screw use where size doesn't matter
 //
@@ -72,8 +79,4 @@ hex_screw = M3_hex_screw;
 frame_soft_screw = No6_screw;               // Used when sheet material is soft, e.g. wood
 frame_thin_screw = M4_cap_screw;            // Used with nuts when sheets are thin
 frame_thick_screw = M4_pan_screw;           // Used with tapped holes when sheets are thick and hard, e.g. plastic or metal
-//
-// Feature sizes
-//
-default_wall = 3;
-thick_wall = 4;
+
