@@ -6,10 +6,12 @@
 // hydraraptor.blogspot.com
 //
 // Ball bearings
-//
-BB624 = [4, 13, 5, "624"];            // 624 ball bearing for idlers
-BB608 = [8, 22, 7, "608"];            // 608 bearings for wades
-XXX = [10, 25, 10, "XXX"];            // For fixing Z leadscrew in Z motor bracket
+//      Inner dia   Outer dia    Thickness
+BB624 =     [4,         13,         5,      "624"];            // 624 ball bearing for idlers
+BB608 =     [8,         22,         7,      "608"];            // 608 bearings for wades
+BB6900 =    [10,        22,         6,      "6900"];            // For fixing Z leadscrew in Z motor bracket
+BB6800ZZ =  [10,        19,         5,      "6800ZZ"];
+XLOLX =     [4,         22,         5,      "XLOLX"]; // for testing
 
 function ball_bearing_diameter(type) = type[1];
 function ball_bearing_width(type) = type[2];

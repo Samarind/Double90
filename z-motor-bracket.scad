@@ -1,8 +1,8 @@
 // Fastens Z motor to the frame
 include <conf/config.scad>
-include <positions.scad>
+// include <positions.scad>
 use <z-coupling.scad> 
-use <x-end.scad> 
+// use <x-end.scad> 
 
 module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_screw, small_screw, M3_clearance_radius) {
     thickness = thick_wall;
@@ -29,7 +29,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                                     cube([length, main_thickness, height], center = true);
                         }
                         // Cutout in top plate
-                        translate([length / 2 + main_thickness / 2, 0, height + 2.5 * main_thickness + ball_bearing_diameter(XXX) / 2])
+                        translate([length / 2 + main_thickness / 2, 0, height + 2.5 * main_thickness + ball_bearing_diameter(BB6800ZZ) / 2])
                             rotate([90, 90, 90]) 
                                 cylinder(r = (width + main_thickness / 2) / 2, h = 2 * main_thickness, center = true);
 
@@ -51,9 +51,9 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                     // Bearing support
                     translate([length / 2 - main_thickness / 2, 0, height / 2 + thickness]) {
                         rotate([0, 90, 0]) 
-                            cylinder(r = ball_bearing_diameter(XXX) / 2 + thickness, h = main_thickness, center = true);
+                            cylinder(r = ball_bearing_diameter(BB6800ZZ) / 2 + thickness, h = main_thickness, center = true);
                         translate([0, 0, -(height / 2 + thickness) / 2])
-                            cube([main_thickness, ball_bearing_diameter(XXX) + 2 * thickness, height / 2 + thickness], center = true);
+                            cube([main_thickness, ball_bearing_diameter(BB6800ZZ) + 2 * thickness, height / 2 + thickness], center = true);
                         translate([- (length / 2 - main_thickness / 2), 0, -z_bar_spacing()]) {
                             rotate([0, 90, 0]) 
                                 cylinder(r = Z_smooth_rod_diameter / 2 + thickness - 0.5, h = length, center = true);
@@ -64,7 +64,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                 }
 
                 // Bearing fixing screw
-                translate([length / 2 + main_thickness / 2, 0, height / 2 + thickness + ball_bearing_diameter(XXX) / 2 + nut_depth(screw_nut(small_screw)) - 1])
+                translate([length / 2 + main_thickness / 2, 0, height / 2 + thickness + ball_bearing_diameter(BB6800ZZ) / 2 + nut_depth(screw_nut(small_screw)) - 1])
                 rotate([0, 0, 90]) {
                     cube([screw_nut_radius(small_screw) * 2, screw_nut_radius(small_screw) * 2, nut_depth(screw_nut(small_screw)) + 1], center = true);
                     translate([0, 0, 10])
@@ -72,7 +72,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                 }
 
                 // Endstop slot
-                translate([length / 2 + 1, ball_bearing_diameter(XXX) / 2 + main_thickness, (microswitch_length() + 1 ) / 2 + 1]) 
+                translate([length / 2 + 1, ball_bearing_diameter(BB6800ZZ) / 2 + main_thickness, (microswitch_length() + 1 ) / 2 + 1]) 
                     cube([microswitch_width() + 1, microswitch_thickness() + 1, microswitch_length() + 1 + eta], center = true);
 
                 translate([-length / 2 - main_thickness / 2, 0, height / 2 + thickness])
@@ -86,7 +86,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                             poly_cylinder(r = Z_screw_diameter / 2, h = 4 * main_thickness , center = true);
 
                             // Leadscrew bearing hole in top plate
-                            poly_cylinder(r = ball_bearing_diameter(XXX) / 2 + 0.1, h = main_thickness + 2 * eta, center = true);
+                            poly_cylinder(r = ball_bearing_diameter(BB6800ZZ) / 2 + 0.1, h = main_thickness + 2 * eta, center = true);
                         }
 
                         // Motor big hole in bottom plate

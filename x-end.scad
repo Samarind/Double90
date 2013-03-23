@@ -56,16 +56,12 @@ module x_end_bracket() {
                                 teardrop(h = clamp_length + eta, r = (X_smooth_rod_diameter - wall) / 2, truncate=false, $fn = smooth, center = true);  
                     }
                     // Spectra line stabilizer
-                    translate([wall, 0, - X_smooth_rod_diameter / 2])
+                    *translate([wall, 0, - X_smooth_rod_diameter / 2])
                         difference() {
                             cube([2, clamp_width, x_bar_spacing() / 2 + wall], center = true);
                             cube([2 * 2, slit, x_bar_spacing() / 2 + wall], center = true);
                         }
                 }
-
-                // // Endstop holder
-                // translate([3 * wall / 2, clamp_width + Z_bearing_holder_width / 2 - 1.5 * wall, microswitch_length()])
-                //     cube([3 * wall, wall, 2 * microswitch_length()], center = true);
 
                 // Z nut holder
                 if (is_hex(Z_nut)) {
@@ -189,14 +185,14 @@ module x_end_bracket() {
                 }
 
             // Hole for spectra line bearing screw
-            translate([-clamp_length * 3 / 4 + wall, Z_bearing_holder_width / 2 + clamp_width / 2 - wall, x_bar_spacing() / 2])
+            translate([-clamp_length * 3 / 4 + wall, Z_bearing_holder_width / 2 + clamp_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
                 rotate([90, 0, 0]) 
                    teardrop_plus(r = 4/2, h = 2 * clamp_width + eta, center = true);
                 
             // Hole for spectra line fixing screw
-            translate([-wall, clamp_width / 2 + Z_bearing_holder_width / 2, x_bar_spacing() / 2 + 1.5 * ball_bearing_diameter(BB624)])
-                rotate([90, 90, 0])
-                    teardrop_plus(r = M4_clearance_radius, h = clamp_width, center = true);                    
+            #translate([-wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
+                rotate([90, 90, 90])
+                    cylinder(r = M4_clearance_radius, h = clamp_width, center = true);                    
 
             //Hole for Z bearings
             translate([0, 0, -1])
@@ -214,7 +210,7 @@ module x_end_assembly() {
         render() x_end_bracket();
 
     // Z leadscrew nut
-    if (is_hex(Z_nut)) {
+    *if (is_hex(Z_nut)) {
             // Hex nut
         } else {
             if (is_flanged(Z_nut)) {
@@ -230,37 +226,37 @@ module x_end_assembly() {
         }
 
     // Spectra line bearing
-    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, x_bar_spacing() / 2 ])
+    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
         rotate([0, 90, 90]) 
-            ball_bearing(BB624);
+            ball_bearing(XLOLX);
 
     // Spectra line bearing screw
-    *translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, x_bar_spacing() / 2])
+    *translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
         rotate([0, 90, 90]) 
             screw_and_washer(M4_pan_screw, screw_longer_than(clamp_width), center = true);
 
     // Spectra line fixing screw
-    translate([-wall, clamp_width + Z_bearing_holder_width / 2 - wall, x_bar_spacing() / 2 + 1.5 * ball_bearing_diameter(BB624)])
+    *translate([-wall, clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
         rotate([0, 90, 90])
             screw_and_washer(M4_pan_screw, screw_shorter_than(clamp_width), center = true); 
 
     // Z leadscrew
-    translate([-z_bar_spacing(), 0, 40])
+    *translate([-z_bar_spacing(), 0, 40])
         rod(Z_screw_diameter, 150);
     
     // Z smooth rod
-    translate([0, 0, 40])
+    *translate([0, 0, 40])
         rod(Z_smooth_rod_diameter, 200);
 
     // Z bearings
-    for(i = [0, 2]) {
+    *for(i = [0, 2]) {
         translate([0, 0, (shelves_Z_coordinate[i] + shelves_Z_coordinate[i+1])/2 ])
             rotate([0,90,0])
                 linear_bearing(Z_bearings);
     }
 
     // X smooth rods
-    for (second = [0, x_bar_spacing()]) {
+    *for (second = [0, x_bar_spacing()]) {
         translate([-clamp_length + 60, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2 , clamp_width / 2 + second]) {
             rotate([90, 0, 90]) {
                 rod(X_smooth_rod_diameter, 100);
@@ -270,4 +266,4 @@ module x_end_assembly() {
 
 }
 
-// x_end_assembly();
+x_end_assembly();
