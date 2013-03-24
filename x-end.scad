@@ -32,8 +32,10 @@ shelves_Z_coordinate = [ shelf_thickness / 2, // shelve at the bottom
             Z_bearings_holder_height - shelf_thickness / 2, // shelve at the bottom of top bearing
             Z_bearings_holder_height - (shelf_thickness + Z_bearing_length + shelf_clearance + shelf_thickness / 2) ]; // shelve at the top
 
+function x_rod_clamp_clamp_length() = clamp_length;
+function x_rod_clamp_clamp_width() = clamp_width;
 
-module x_end_bracket() {
+module x_end() {
         // Shelves for bearings
         intersection() {
             for(z = shelves_Z_coordinate) {
@@ -51,16 +53,18 @@ module x_end_bracket() {
                         cube([clamp_length, clamp_width, x_bar_spacing() + wall], center = true);
                         translate([0, 0, -X_smooth_rod_diameter / 2 + wall / 2])
                             cube([clamp_length + eta, X_smooth_rod_diameter - wall, x_bar_spacing() - clamp_width], center = true); 
-                        translate([0, 0, (x_bar_spacing() - 1.5 * clamp_width) / 2])
+                        translate([ 1.5 * wall, 0, (x_bar_spacing() - 1.5 * clamp_width) / 2])
+                            rotate([90, 0, 90])  
+                                teardrop(h = clamp_length - 1.5 * wall + eta, r = (X_smooth_rod_diameter - wall) / 2, truncate=false, $fn = smooth, center = true);  
+                    }
+                    difference() {
+                        // Spectra line tensioner plate 
+                        translate([ -clamp_length / 2 + (clamp_length / 2 - 1.5 * wall) / 2, 0, (x_bar_spacing() - 1.5 * clamp_width) / 2 - wall / 2])
+                            cube([clamp_length / 2 - 1.5 * wall, X_smooth_rod_diameter - wall, X_smooth_rod_diameter + wall], center = true);
+                        translate([ -clamp_length / 2 + (clamp_length / 2 - 1.5 * wall) / 2, 0, (x_bar_spacing() - 1.5 * clamp_width) / 2 - wall / 2 - (X_smooth_rod_diameter + wall) / 2])
                             rotate([90, 0, 90])  
                                 teardrop(h = clamp_length + eta, r = (X_smooth_rod_diameter - wall) / 2, truncate=false, $fn = smooth, center = true);  
                     }
-                    // Spectra line stabilizer
-                    *translate([wall, 0, - X_smooth_rod_diameter / 2])
-                        difference() {
-                            cube([2, clamp_width, x_bar_spacing() / 2 + wall], center = true);
-                            cube([2 * 2, slit, x_bar_spacing() / 2 + wall], center = true);
-                        }
                 }
 
                 // Z nut holder
@@ -189,10 +193,10 @@ module x_end_bracket() {
                 rotate([90, 0, 0]) 
                    teardrop_plus(r = 4/2, h = 2 * clamp_width + eta, center = true);
                 
-            // Hole for spectra line fixing screw
-            #translate([-wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
+            // Hole for spectra line tensioning screw
+            translate([-clamp_length / 2, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
                 rotate([90, 90, 90])
-                    cylinder(r = M4_clearance_radius, h = clamp_width, center = true);                    
+                    cylinder(r = M4_clearance_radius, h = 2 * clamp_length, center = true);                    
 
             //Hole for Z bearings
             translate([0, 0, -1])
@@ -207,7 +211,8 @@ module x_end_bracket() {
 
 module x_end_assembly() {
     color(x_end_bracket_color)
-        render() x_end_bracket();
+        render() 
+            x_end();
 
     // Z leadscrew nut
     *if (is_hex(Z_nut)) {

@@ -23,6 +23,7 @@ Z_nut_depth = nut_depth(Z_nut);
 
 my_frame_screw = M5_cap_screw;
 small_screw = M3_cap_screw;
+small_nut = M3_nut;
 
 
 // UNUSED ---------------------------------------------------------
