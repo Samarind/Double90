@@ -1,5 +1,6 @@
 // End of the X axis
 include <conf/config.scad>;
+include <624-idler.scad>;
 
 rounded_corner_radius = 6;
 
@@ -231,12 +232,14 @@ module x_end_assembly() {
         }
 
     // Spectra line bearing
-    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1])
-        rotate([0, 90, 90]) 
-            ball_bearing(x_spectra_bearing);
+    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(BB624PRINTED) / 2 + 1])
+        rotate([0, 90, 90]) {
+            ball_bearing(BB624);
+            idler();
+        }
 
     // Spectra line bearing screw
-    translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1])
+    *translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(BB624PRINTED) / 2 + 1])
         rotate([0, 90, 90]) 
             screw_and_washer(M4_pan_screw, screw_longer_than(clamp_width), center = true);
 

@@ -56,4 +56,4 @@ module spool_assembly() {
     spool();
 }
 
-// spool();
+spool();

@@ -25,7 +25,7 @@ my_frame_screw = M5_cap_screw;
 small_screw = M3_cap_screw;
 small_nut = M3_nut;
 
-x_spectra_bearing = XLOLX;
+x_spectra_bearing = BB624PRINTED;
 
 
 // UNUSED ---------------------------------------------------------

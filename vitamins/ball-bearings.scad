@@ -9,12 +9,13 @@
 //      Inner dia   Outer dia    Thickness
 BB624 =     [4,         13,         5,      "624"];            // 624 ball bearing for idlers
 BB608 =     [8,         22,         7,      "608"];            // 608 bearings for wades
-BB6900 =    [10,        22,         6,      "6900"];            // For fixing Z leadscrew in Z motor bracket
+BB6900 =    [10,        22,         6,      "6900"];           // For fixing Z leadscrew in Z motor bracket
 BB6800ZZ =  [10,        19,         5,      "6800ZZ"];
-XLOLX =     [4,         22,         5,      "XLOLX"]; // for testing
+BB624PRINTED =[4,       22,         5,      "624 + Printed"];  // for idler
 
 function ball_bearing_diameter(type) = type[1];
 function ball_bearing_width(type) = type[2];
+
 
 module ball_bearing(type) {
     vitamin(str("BB",type[3],": Ball bearing ",type[3]," ",type[0], "mm x ", type[1], "mm x ", type[2], "mm"));

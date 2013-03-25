@@ -1,8 +1,6 @@
 // Fastens Z motor to the frame
 include <conf/config.scad>
-// include <positions.scad>
 use <z-coupling.scad> 
-// use <x-end.scad> 
 
 module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_screw, small_screw, M3_clearance_radius) {
     thickness = thick_wall;
