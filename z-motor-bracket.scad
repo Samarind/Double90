@@ -14,6 +14,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
     big_motor_hole = NEMA_big_hole(Z_motor);
 
     color(z_motor_bracket_color)
+        render()
             difference() {
                 union() {
                     difference() {

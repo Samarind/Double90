@@ -234,4 +234,4 @@ bar_clamp_depth = 4 + washer_diameter(base_washer);           // how thick the b
 bar_clamp_tab = 3 + washer_diameter(base_washer);             // how much the lugs stick out
 bar_clamp_band = 3;                                           // the thickness of the strap that clamps the bar.
 
-smooth = 30;
+smooth = 100;

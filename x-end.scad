@@ -165,21 +165,21 @@ module x_end() {
                     translate([-z_bar_spacing(), 0, 0])
                         poly_cylinder(r = Z_nut_radius + 0.2, h = nut_depth(Z_nut) + eta, $fn = smooth);
                     translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - flanged_nut_flange_thickness(Z_nut) / 2 - 0.1])
-                    rotate([0, 0, 23]) {
-                        flanged_nut(Z_nut);
-                        rotate([0, 0, 120]) {
-                            translate ([flanged_nut_hole_distance_radius(Z_nut), 0, base_thickness / 2])
-                                poly_cylinder (r = flanged_nut_mounting_hole_radius(Z_nut), h = 2 * flanged_nut_barrel_thickness(Z_nut) + 0.1, center = true);
-                            translate ([-flanged_nut_hole_distance_radius(Z_nut), 0, base_thickness / 2])
-                                poly_cylinder (r = flanged_nut_mounting_hole_radius(Z_nut), h = 2 * flanged_nut_barrel_thickness(Z_nut) + 0.1, center = true);
-                        }           
-                    }
+                        rotate([0, 0, 23]) {
+                            flanged_nut(Z_nut);
+                            rotate([0, 0, 120]) {
+                                translate ([flanged_nut_hole_distance_radius(Z_nut), 0, base_thickness / 2])
+                                    poly_cylinder (r = flanged_nut_mounting_hole_radius(Z_nut), h = 2 * flanged_nut_barrel_thickness(Z_nut) + 0.1, center = true);
+                                translate ([-flanged_nut_hole_distance_radius(Z_nut), 0, base_thickness / 2])
+                                    poly_cylinder (r = flanged_nut_mounting_hole_radius(Z_nut), h = 2 * flanged_nut_barrel_thickness(Z_nut) + 0.1, center = true);
+                            }           
+                        }
             } else {
                 //Round nut
                 translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 + wall]) 
                     poly_cylinder(r = Z_nut_radius, h = nut_depth(Z_nut) + 0.1, $fn = smooth, center = true);
                 translate([-z_bar_spacing(), - Z_nut_radius / 2 - wall, nut_depth(Z_nut) / 2 + wall])
-                    cube([Z_nut_radius * 2, Z_nut_radius + 2 * wall, nut_depth(Z_nut) + 0.1], center = true);
+                    cube([(Z_nut_radius + 0.1) * 2, Z_nut_radius + 2 * wall, nut_depth(Z_nut) + 0.1], center = true);
             }
 
             // Endstop mount
@@ -189,12 +189,12 @@ module x_end() {
                 }
 
             // Hole for spectra line bearing screw
-            translate([-clamp_length * 3 / 4 + wall, Z_bearing_holder_width / 2 + clamp_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
+            translate([-clamp_length * 3 / 4 + wall, Z_bearing_holder_width / 2 + clamp_width / 2 - wall, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1])
                 rotate([90, 0, 0]) 
                    teardrop_plus(r = 4/2, h = 2 * clamp_width + eta, center = true);
                 
             // Hole for spectra line tensioning screw
-            translate([-clamp_length / 2, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
+            translate([-clamp_length / 2, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1 + 1.5 * ball_bearing_diameter(x_spectra_bearing)])
                 rotate([90, 90, 90])
                     cylinder(r = M4_clearance_radius, h = 2 * clamp_length, center = true);                    
 
@@ -231,19 +231,14 @@ module x_end_assembly() {
         }
 
     // Spectra line bearing
-    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
+    translate([-clamp_length * 3 / 4 + wall, X_smooth_rod_diameter / 2 + Z_bearing_holder_width / 2, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1])
         rotate([0, 90, 90]) 
-            ball_bearing(XLOLX);
+            ball_bearing(x_spectra_bearing);
 
     // Spectra line bearing screw
-    *translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1])
+    translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(x_spectra_bearing) / 2 + 1])
         rotate([0, 90, 90]) 
             screw_and_washer(M4_pan_screw, screw_longer_than(clamp_width), center = true);
-
-    // Spectra line fixing screw
-    *translate([-wall, clamp_width + Z_bearing_holder_width / 2 - wall, clamp_width + ball_bearing_diameter(XLOLX) / 2 + 1 + 1.5 * ball_bearing_diameter(XLOLX)])
-        rotate([0, 90, 90])
-            screw_and_washer(M4_pan_screw, screw_shorter_than(clamp_width), center = true); 
 
     // Z leadscrew
     *translate([-z_bar_spacing(), 0, 40])
