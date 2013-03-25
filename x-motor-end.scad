@@ -55,8 +55,8 @@ module x_motor_end() {
                         cube([z_bar_spacing() + wall / 2, 2 * wall - 0.5, 2 * axle_height], center = true);
 
                     // Bottom connection
-                    translate([-z_bar_spacing() - (Z_nut_radius + anti_backlash_wall_width) / 2 + 1, -(Z_nut_radius + anti_backlash_wall_width) / 2, (wall - 0.05) / 2]) 
-                        #cube([Z_nut_radius, Z_nut_radius + anti_backlash_wall_width, wall - 0.05], center = true);
+                    translate([-z_bar_spacing() - (Z_nut_radius + anti_backlash_wall_width) / 2, -(Z_nut_radius + anti_backlash_wall_width) / 2, (wall - 0.05) / 2]) 
+                        cube([Z_nut_radius + 1, Z_nut_radius + anti_backlash_wall_width, wall - 0.05], center = true);
                     
                     // Triangles
                     for (sign = [1, -1]) {
@@ -64,6 +64,11 @@ module x_motor_end() {
                             rotate([90, 0, 270])
                                 right_triangle(width = Z_nut_radius * 2,  height = 2 * axle_height - (wall - 1), h = wall, center = true); 
                     }
+
+                    // Support triangle on top
+                    translate([-x_rod_clamp_clamp_length() + 0.1, Z_nut_radius, axle_height * 2]) 
+                        rotate([90, 0, 180]) 
+                            right_triangle(width = Z_nut_radius + NEMA_width(X_motor) + 2 * wall + 1,  height = 1.5 * X_smooth_rod_diameter, h = wall, center = true);
                 }
                 //Round nut
                 translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 + wall]) {
