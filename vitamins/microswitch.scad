@@ -24,7 +24,7 @@ module microswitch_hole_positions() {
             child();
 }
 
-module microswitch_slot(r = No2_pilot_radius, h = 7.5, l = microswitch_slot_length()) {
+module microswitch_slot(r = No2_pilot_radius, h = 7.5, l = microswitch_holes_distance() + 4) {
     hull() {
         for(x = [- l / 2, l / 2])
             translate([x, 0, 0])

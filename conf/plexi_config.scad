@@ -12,7 +12,7 @@ X_motor = NEMA23;
 Y_motor = NEMA23;
 Z_motor = NEMA23;
 
-frame_sheets_distance = max(50, NEMA_length(X_motor), NEMA_holes_distance(Z_motor) + 4 * structure_wall);
+frame_sheets_distance = max(50, NEMA_length(X_motor) + 29, NEMA_holes_distance(Z_motor) + 4 * structure_wall);
 z_coupling_height = 30;
 
 //Parameters of Z leadscrew

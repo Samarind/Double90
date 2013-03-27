@@ -1,6 +1,7 @@
 // Fastens Z motor to the frame
 include <conf/config.scad>
 use <z-coupling.scad> 
+use <x-motor-end.scad> 
 
 module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_screw, small_screw, M3_clearance_radius) {
     thickness = thick_wall;
@@ -104,15 +105,19 @@ module z_motor_bracket_assembly() {
     z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_screw, small_screw, M3_clearance_radius);
 
     //Motor
-    *translate([- 31.5, 0, 71.6 / 2 + 4])
+    translate([- 31.5, 0, 71.6 / 2 + 4])
         rotate([0, 90, 0])
             NEMA(Z_motor);
 
     // Z coupler
-    *translate([0, 0, 71.6 / 2 + 4])
+    translate([0, 0, 71.6 / 2 + 4])
         rotate([90, 180, 90])
             z_coupler_assembly();
 }
 
-    z_motor_bracket_assembly();
+// translate([10, 0, -35]) 
+//     rotate([0, 270, 0]) 
+        z_motor_bracket_assembly();
+
+// x_motor_end_assembly();        
 
