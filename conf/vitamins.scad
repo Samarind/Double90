@@ -33,7 +33,7 @@ include <../vitamins/hot_ends.scad>
 include <../vitamins/bars.scad>
 include <../vitamins/pullies.scad>
 
-module rod(d , l) {
+module rod(d, l) {
     vitamin(str("RD", d, round(l), ": Smooth rod ", d, "mm x ", round(l), "mm"));
     color(rod_color)
         cylinder(r = d / 2, h = l, center = true);

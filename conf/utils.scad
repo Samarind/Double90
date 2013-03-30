@@ -12,6 +12,7 @@ include <../utils/polyholes.scad>
 include <../utils/teardrops.scad>
 include <../utils/cables.scad>
 include <../utils/shields.scad>
+include <../utils/bearing-holder.scad>
 
 module slot(h, r, l, center = true)
     linear_extrude(height = h, convexity = 6, center = center)
