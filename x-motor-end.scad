@@ -1,23 +1,24 @@
 // End of the X axis with motor
 include <conf/config.scad>;
-use <spool.scad>
-use <x-end.scad>
+use <spool.scad>;
+use <x-end.scad>;
+use <bearing-holder.scad>;
 
-axle_height = bearing_height();
+axle_height = spectra_bearing_height_position();
 axle_x_offset = -74.3;
 
 module x_motor_end() {
     wall = thick_wall; 
-    Z_bearing_holder_wall = 2.5;
-    Z_bearing_outer_diameter = Z_bearings[1] + 0.2;
-    Z_bearing_holder_width = Z_bearing_outer_diameter + 2 * Z_bearing_holder_wall;
+
+    Z_bearings_holder_height = bearings_holder_height(Z_bearings);
+    Z_bearing_holder_width = bearings_holder_width(Z_bearings);
     anti_backlash_wall_radius = Z_nut_radius + 0.2;
     anti_backlash_wall_width = max(3, Z_bearing_holder_width / 2 - wall - cos(30) * anti_backlash_wall_radius + 0.5);
     union () {
         difference() {
             x_end_assembly();
 
-            // cutouts for spectra line
+            // Cutout for spectra line
             translate([-x_rod_clamp_length() / 2, bearing_y_offset(), axle_height - 0.5]) {
                 cube([x_rod_clamp_length() * 2, spool_working_width() + 0.5, ball_bearing_diameter(x_spectra_bearing)], center = true);
                 for (sign = [1, -1]) {
@@ -33,8 +34,8 @@ module x_motor_end() {
                 translate([axle_x_offset, Z_nut_radius - (wall - 0.5) / 2 + 0.1, 0]) 
                     difference() {
                         // Motor holding wall
-                        translate([0, 0, Z_bearings_holder_height() / 2])
-                            cube([NEMA_width(X_motor) + 2 * wall + 1, 2 * wall - 0.5, Z_bearings_holder_height()], center = true);
+                        translate([0, 0, Z_bearings_holder_height / 2])
+                            cube([NEMA_width(X_motor) + 2 * wall + 1, 2 * wall - 0.5, Z_bearings_holder_height], center = true);
                         translate([0, 0, axle_height]) {
                             // Big motor hole
                             rotate([90, 0, 0])
@@ -56,8 +57,8 @@ module x_motor_end() {
                             cube([NEMA_width(X_motor) + 2 * wall + 1, Z_bearing_holder_width, wall], center = true);
 
                         //Connection of the motor wall with main body  
-                        translate([-z_bar_spacing() + wall, Z_nut_radius - (wall - 0.5) / 2 + 0.1, Z_bearings_holder_height() / 2]) 
-                            cube([z_bar_spacing() + wall / 2, 2 * wall - 0.5, Z_bearings_holder_height()], center = true);
+                        translate([-z_bar_spacing() + wall, Z_nut_radius - (wall - 0.5) / 2 + 0.1, Z_bearings_holder_height / 2]) 
+                            cube([z_bar_spacing() + wall / 2, 2 * wall - 0.5, Z_bearings_holder_height], center = true);
 
                         // Bottom connection
                         translate([-z_bar_spacing() - (Z_nut_radius + anti_backlash_wall_width) / 2, 0, (wall - 0.05) / 2]) 
@@ -67,11 +68,11 @@ module x_motor_end() {
                         for (sign = [1, -1]) {
                             translate([axle_x_offset + sign * (NEMA_width(X_motor) / 2 + wall / 2 + 0.5), Z_nut_radius - (wall - 0.5) / 2 + 0.1 - (2 * wall - 0.5) / 2  + 0.15, wall]) 
                                 rotate([90, 0, 270])
-                                    right_triangle(width = Z_bearing_holder_width - (2 * wall - 0.5),  height = Z_bearings_holder_height() - wall, h = wall, center = true); 
+                                    right_triangle(width = Z_bearing_holder_width - (2 * wall - 0.5),  height = Z_bearings_holder_height - wall, h = wall, center = true); 
                         }
 
                         // Support triangle on top
-                        translate([-x_rod_clamp_length() + 0.1, Z_nut_radius + 0.1, Z_bearings_holder_height()]) 
+                        translate([-x_rod_clamp_length() + 0.1, Z_nut_radius + 0.1, Z_bearings_holder_height]) 
                             rotate([90, 0, 180]) 
                                 right_triangle(width = Z_nut_radius + NEMA_width(X_motor) + 2 * wall + 1,  height = X_smooth_rod_diameter + wall, h = wall, center = true);
                     }

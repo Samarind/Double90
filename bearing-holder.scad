@@ -1,60 +1,51 @@
-//
-// Mendel90
-//
-// GNU GPL v2
-// nop.head@gmail.com
-// hydraraptor.blogspot.com
-//
-// Fastens the bearings to the Y-carriage
-//
-// Based on a design by Jeffrey Olijar (Jolijar)
-//
-include <conf/config.scad>
+include <conf/config.scad>;
 
-wall = 2.5;                            // wall thickness
-end_wall = 2.8;
-clearance = 0.2;                       // end clearance
-relief = 0.5;                          // clearance in the middle to stop the bearing rocking
-ziptie_clearance = 1;
+bearing_holder_wall = 2.5;
+shelf_thickness = 2;
+shelf_clearance = 0.2; // distance between top of bearing and a shelf
 
-ziptie = small_ziptie;
+function bearing_outer_diameter(bearing_type) = bearing_type[1] + 0.2;
+function bearings_holder_width(bearing_type) = bearing_outer_diameter(bearing_type) + 2 * bearing_holder_wall;
+function bearings_holder_height(bearing_type) = max( min(65, 2.8 * bearing_type[0]), 2 * (bearing_type[0] + shelf_clearance) + 3 * shelf_thickness);
+function shelves_coordinate(bearing_type) = [ shelf_thickness / 2, // shelve at the bottom
+                            shelf_thickness + bearing_type[0] + shelf_clearance + shelf_thickness / 2, // shelve at the top of bottom bearing
+                            bearings_holder_height(bearing_type) - shelf_thickness / 2, // shelve at the bottom of top bearing
+                            bearings_holder_height(bearing_type) - (shelf_thickness + bearing_type[0] + shelf_clearance + shelf_thickness / 2) ]; // shelve at the top
 
-zipslot_width    = ziptie_width(ziptie) + ziptie_clearance;
-zipslot_tickness = ziptie_thickness(ziptie) + ziptie_clearance;
+module bearing_holder (bearing_type) {
+    bearing_depth = bearings_holder_width(bearing_type) / 2;
+    smooth_rod_diameter = bearing_type[2];
+    shelf_depth = bearing_depth - (smooth_rod_diameter / 2 + 1);
 
-function bearing_holder_length(bearing) = bearing[0] + 2 * (end_wall + clearance);
-function bearing_holder_width(bearing) = bearing[1] + wall * 2;
-
-function bearing_ziptie_radius(bearing) = bearing[1] / 2 + wall + eta;
-
-module bearing_holder(bearing, bar_height, populate = false) {
-    bearing_length = bearing[0];
-    bearing_dia = bearing[1];
-    below = 5 * bearing_dia / 15;
-    height = bar_height + bearing_dia/2 - below;
-    offset = below + height / 2 - bearing_dia / 2;
-    fence = 2.5;
-    width = bearing_holder_width(bearing);
-    length = bearing_holder_length(bearing);
-    fence_offset = bearing_dia / 2 - fence + (fence + 1) /2;
-    union(){
-        difference() {
-            translate([0, 0, -offset])                                                      // Basic shape
-                cube(size = [width, length, height], center = true);
-            rotate([90,0,0]) {
-                cylinder(h = length + 1, r = bearing_dia / 2, center=true);         // Bearing Cutout
-                cylinder(h = length / 2, r = bearing_dia / 2 + relief, center=true);// releave the center so does not rock
-                tube(h = zipslot_width, ir = bearing_dia / 2 + wall,
-                                        or = bearing_dia / 2 + wall + zipslot_tickness, fn=64); // ziptie slot
-
-            }
+    // Shelves for bearings
+    intersection() {
+        for(z = shelves_coordinate(bearing_type)) {
+            translate([-bearing_depth + shelf_depth / 2, 0, z])
+                cube([shelf_depth, bearing_outer_diameter(bearing_type), shelf_thickness], center = true);
         }
-        translate([0,  (length - end_wall)/ 2, -fence_offset]) cube(size = [width,end_wall,fence + 1], center = true); // Blocks at the end to keep the bearing from sliding out
-        translate([0, -(length - end_wall)/ 2, -fence_offset]) cube(size = [width,end_wall,fence + 1], center = true);
+        cylinder(h = bearings_holder_height(bearing_type), r = bearings_holder_width(bearing_type) / 2, $fn = smooth);
     }
-    if(populate)
-        rotate([0,0,90])
-            linear_bearing(bearing);
+
+    difference() {
+        union() {
+            // Bearings holder
+            translate([0, 0, bearings_holder_height(bearing_type) / 2])
+                cylinder(h = bearings_holder_height(bearing_type), r = bearings_holder_width(bearing_type) / 2, $fn = smooth, center = true);
+        }
+        //Hole for bearings
+        translate([0, 0, -1])
+            poly_cylinder(h = bearings_holder_height(bearing_type) + 1 + eta, r = bearing_outer_diameter(bearing_type) / 2);
+
+        //Front entry cut out
+        translate([bearing_outer_diameter(bearing_type) / 2, 0, bearings_holder_height(bearing_type) / 2])
+            rotate([0, 0, 45])
+                cube([bearing_outer_diameter(bearing_type), bearing_outer_diameter(bearing_type), bearings_holder_height(bearing_type) + 1], center = true);
+    }      
 }
 
-bearing_holder(LM8UU, 20);
+module empty_space_for_bearing_holder (bearing_type) {
+    translate([0, 0, bearings_holder_height(bearing_type) / 2])
+                cylinder(h = bearings_holder_height(bearing_type) + eta, r = bearings_holder_width(bearing_type) / 2 + eta / 2, $fn = smooth, center = true);
+}
+
+// bearing_holder(X_bearings);
