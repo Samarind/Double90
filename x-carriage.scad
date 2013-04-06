@@ -26,43 +26,34 @@ module x_carriage() {
     union() {
         difference() {
             union() {
-                translate([-X_bearings_holder_length / 2, 0, 0]) {
-                    // Bottom bearing holder
-                    rotate(a = 270, v = [1, 0, 0])
-                        rotate([90, 0, 90]) 
-                            bearing_holder(X_bearings, center = true);
-
-                    // Top bearing holder
-                    translate([0, 0, x_bar_spacing()])
-                        // cube([X_bearings_holder_length - 20, X_bearings_holder_width, X_bearings_holder_width], center = true);
-                        // rotate(a = 270, v = [1, 0, 0])
-                            rotate([90, 0, 90]) 
-                                bearing_holder(X_bearings, center = true);
-                        *rotate([90, 0, 90]) 
-                            cylinder(r = X_bearings_holder_width / 2, h = X_bearings_holder_length, $fn = smooth, center=true);
-                }
+                // Top bearing holder
+                translate([0, 0, x_bar_spacing()])
+                    rotate([90, 0, 90]) 
+                        cylinder(r = bearing_outer_diameter(X_bearings) / 2 + 1.5 * wall, h = X_bearings_holder_length, $fn = smooth, center = true);
 
                 // Main plate
-                translate([0, -X_bearings_holder_width / 4, x_bar_spacing() / 2 + X_bearings_holder_width / 4 - X_smooth_rod_diameter / 8])
-                    cube([X_bearings_holder_length, X_bearings_holder_width / 2, x_bar_spacing() + X_bearings_holder_width / 2 + X_smooth_rod_diameter / 4], center = true);
-
-                for (z = [axle_height - 25, axle_height, axle_height + 25]) {
-                    translate([0, -X_bearings_holder_width / 2 - 5, z])
-                        rotate([0, 90, 180]) 
-                            rail(X_bearings_holder_length, 15, 5);
-                }
-                translate([0, -X_bearings_holder_width / 2 - 5, axle_height - 50])
-                    rotate([0, 90, 180]) 
-                        halfrail(X_bearings_holder_length, 15, 5);
+                translate([0, 0, x_bar_spacing() / 2 + wall / 2 - wall])
+                    cube([X_bearings_holder_length, bearing_outer_diameter(X_bearings) + 2 * 1.5 * wall, x_bar_spacing() + 2 * wall], center = true);
 
             }
-            // Cutout in top bearing holder
-            translate([0, ball_bearing_diameter(x_spectra_bearing) / 2, x_bar_spacing() - ball_bearing_diameter(x_spectra_bearing) / 2])
-                cube([X_bearings_holder_length + eta, ball_bearing_diameter(x_spectra_bearing), ball_bearing_diameter(x_spectra_bearing)], center = true);
+
+            //Front rail cutout
+            translate([0, -bearing_outer_diameter(X_bearings) / 2 - 1.5 * wall + 4, x_bar_spacing() / 2])
+                rotate([0, 90, 0]) 
+                    rail(X_bearings_holder_length + eta, 40, 4 + eta);
+
+            //Back rail cutout
+            translate([0, bearing_outer_diameter(X_bearings) / 2 + 1.5 * wall - 4, x_bar_spacing() / 2])
+                rotate([90, 270, 90]) 
+                    rail(X_bearings_holder_length + eta, 40, 4 + eta);
+
+            // Slit
+            translate([0, 0, x_bar_spacing() / 2])
+                cube([X_bearings_holder_length + eta, 1, x_bar_spacing()], center = true);
 
             // Bottom cutout for spectra line
             translate([0, 0, axle_height - 1.5 * ball_bearing_diameter(x_spectra_bearing) - 0.25])
-                cube([X_bearings_holder_length + eta, spool_working_width() + 0.5, 1], center = true);
+                cube([X_bearings_holder_length + eta, spool_working_width() + 2, 2], center = true);
 
             // Cutouts for spectra line idlers && idler screw holes
             for (sign = [-1, 1]) {
@@ -71,25 +62,29 @@ module x_carriage() {
                         cube([(624idler_outer_radius() + 1) * 2, 624idler_width() + 1, (624idler_outer_radius() + 1) * 2], center = true);
                     rotate([0, 90, 90]) 
                         poly_cylinder(r = 624idler_outer_radius() + 1, h = 624idler_width() + 1, $fn = smooth, center = true);
-                    rotate([90, 0, 0]) 
-                        teardrop_plus(r = 4/2, h = 2 * X_bearings_holder_width + eta, center = true);
-                        // nut_trap(M4_clearance_radius, nut_outer_radius(M4_nut), nut_depth(M4_nut));
+                    translate([0, -bearing_outer_diameter(X_bearings) / 2 - 1.5 * wall + 6.1, 0])
+                        rotate([90, 0, 0]) 
+                            poly_cylinder(r=screw_head_radius(M4_pan_screw), h=screw_head_height(M4_pan_screw) + 1, center = true);
+                    translate([0, -(-bearing_outer_diameter(X_bearings) / 2 - 1.5 * wall + 5), 0])
+                        rotate([90, 0, 0]) 
+                            nut_trap(M4_clearance_radius, nut_outer_radius(M4_nut) + 0.1, nut_depth(M4_nut));
                 }
             }
 
+            // Central hole
+            translate([-wall / 2 , 0, x_bar_spacing() / 2])
+                rotate([90, 90, 0]) 
+                    teardrop_plus(r = 13, h = X_bearings_holder_length + eta, truncate=false, $fn = smooth, center = true);
+            
+
             //Empty space for bearings and rods
             for (second = [0, x_bar_spacing()]) {
-                translate([0, 0, second]) {
+                translate([0, 0, second])
                     rotate([90, 0, 90]) 
-                        rod(X_smooth_rod_diameter + 2, 200);
-                    rotate([90, 0, 0]) 
-                        for (i = [0, 2]) {
-                            translate([(shelves_coordinate(X_bearings)[i] + shelves_coordinate(X_bearings)[i+1]) / 2 - bearings_holder_height(X_bearings) / 2, 0, 0])
-                                linear_bearing(X_bearings);
-                        }
-                }
+                        poly_cylinder(r = bearing_outer_diameter(X_bearings) / 2 + eta, h = X_bearings_holder_length + eta, $fn = smooth, center = true);
             }
         }
+
     }
 }
 
@@ -99,10 +94,10 @@ module x_carriage_assembled() {
             x_carriage();
 
     // X smooth rods with bearings
-    for (second = [0, x_bar_spacing()]) {
+    *for (second = [0, x_bar_spacing()]) {
         translate([0, 0 , second]) {
             rotate([90, 0, 90]) 
-                rod(X_smooth_rod_diameter, 200);
+                rod(X_smooth_rod_diameter, 97 * 2);
                 for (i = [0, 2]) {
                     translate([(shelves_coordinate(X_bearings)[i] + shelves_coordinate(X_bearings)[i+1]) / 2 - bearings_holder_height(X_bearings) / 2, 0, 0])
                         linear_bearing(X_bearings);
@@ -120,9 +115,31 @@ module x_carriage_assembled() {
         }
     }
 
-    translate([- 45, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
+    // Idler screws
+    for (sign = [-1, 1]) {
+        translate([sign * (X_bearings_holder_length / 2  - 2 * wall), 0, axle_height]) {
+            translate([0, -bearing_outer_diameter(X_bearings) / 2 - 1.5 * wall + 8.3, 0])
+                rotate([90, 0, 0]) 
+                    screw(M4_pan_screw, 20, center = true);
+            translate([0, -(-bearing_outer_diameter(X_bearings) / 2 - 1.5 * wall + 5), 0])
+                rotate([90, 0, 0]) 
+                    nut(M4_nut);
+        }
+
+    }
+
+    *translate([- 44, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
         x_motor_end_assembly();
-        echo(str("Variable = ", X_bearings_holder_length));
+
+    *translate([56, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
+        translate([11, 0, 0])
+            mirror([1, 0, 0]) {
+                x_end_assembly();
+            }
+
+    *translate([0, -50, axle_height])
+        rotate([0, -90, 0]) 
+            NEMA(X_motor);
 }
 
 x_carriage_assembled();
