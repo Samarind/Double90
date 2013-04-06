@@ -106,6 +106,14 @@ base_nuts = false;                  // Need something under the base if using nu
 pulley_type = T5x8_plastic_pulley;
 include <variant.scad>              // this file is generated from the command line parameter to include one of the machine configs
 
+// rod sizes to match the bearings
+X_smooth_rod_diameter = X_bearings[2];      
+Y_bar_dia = Y_bearings[2];
+Z_smooth_rod_diameter = Z_bearings[2];
+
+z_axis_offset = frame_sheets_distance / 2 - X_smooth_rod_diameter - 2 * default_wall - bearing_radius(Z_bearings) - default_wall - 15;
+echo(str("Variable = ", z_axis_offset));
+
 screw_clearance_radius = screw_clearance_radius(cap_screw);
 nut = screw_nut(cap_screw);
 nut_radius = nut_radius(nut);
@@ -124,10 +132,6 @@ X_carriage_clearance = 2;               // how close the X carriage is to the XZ
 Y_carriage_clearance = 2 + bulldog_handle_length(small_bulldog) - (Y_carriage_width - bed_width) / 2;
 Z_clearance = 10;                       // How close the top of the object gets to the gantry
 belt_clearance = 0.2;                   // clearance of belt clamp slots
-
-X_smooth_rod_diameter = X_bearings[2];      // rod sizes to match the bearings
-Y_bar_dia = Y_bearings[2];
-Z_smooth_rod_diameter = Z_bearings[2];
 
 Y_idler_bearing = BB624;
 X_idler_bearing = BB624;

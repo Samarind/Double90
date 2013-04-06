@@ -63,7 +63,7 @@ PD_150_12 =
     ];
 
 KY240W =
-    ["KY240W12L", 199, 110, 50, M3_cap_screw, M3_clearance_radius, true,
+    ["KY240W12L", 200, 110, 50, M3_cap_screw, M3_clearance_radius, true,
         [
             [ 199 / 2 - 12,  110 / 2 - 93],
             [ 199 / 2 - 12,  110 / 2 - 9 ],

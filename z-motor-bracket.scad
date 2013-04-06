@@ -53,7 +53,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                     }
 
                     // Bearing support
-                    translate([length / 2 - main_thickness / 2, 0, (smooth_rod_height + z_bar_spacing()) / 2]) {
+                    translate([length / 2 - main_thickness / 2, z_axis_offset, (smooth_rod_height + z_bar_spacing()) / 2]) {
                         translate([0, 0, (smooth_rod_height + z_bar_spacing()) / 2])
                             rotate([0, 90, 0]) 
                                 cylinder(r = ball_bearing_diameter(BB6800ZZ) / 2 + thickness, h = main_thickness, center = true);
@@ -61,7 +61,7 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                     }
 
                     // Smooth rod support
-                    translate([0, 0, smooth_rod_height]) {
+                    translate([0, z_axis_offset, smooth_rod_height]) {
                         rotate([0, 90, 0]) 
                             cylinder(r = smooth_rod_height, h = length, center = true);
                         translate([0, 0, -smooth_rod_height / 2])   
@@ -70,18 +70,21 @@ module z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_s
                 }
 
                 // Bearing fixing screw
-                translate([length / 2 + main_thickness / 2, 0, cutout_edge_height - main_thickness + nut_depth(screw_nut(small_screw)) / 2])
-                    rotate([0, 0, 90]) {
+                translate([length / 2 + main_thickness / 2, z_axis_offset, cutout_edge_height - main_thickness + nut_depth(screw_nut(small_screw)) / 2]) {
+                    cube([screw_nut_radius(small_screw) * 2, screw_nut_radius(small_screw) * 2, nut_depth(screw_nut(small_screw)) + 1], center = true);
+                    translate([0, 0, main_thickness + nut_depth(screw_nut(small_screw)) / 2])
                         cube([screw_nut_radius(small_screw) * 2, screw_nut_radius(small_screw) * 2, nut_depth(screw_nut(small_screw)) + 1], center = true);
+                    rotate([0, 0, 90]) {
                         translate([0, 0, 10])
                             poly_cylinder(r = screw_radius(small_screw), h = 30, center = true);
+                    }
                 }
 
                 // Endstop slot
-                translate([length / 2 + 1, ball_bearing_diameter(BB6800ZZ) / 2 + main_thickness, (microswitch_length() + 1 ) / 2 + 1]) 
+                translate([length / 2 + 1, ball_bearing_diameter(BB6800ZZ) / 2 + main_thickness + z_axis_offset, (microswitch_length() + 1 ) / 2 + 1]) 
                     cube([microswitch_width() + 1, microswitch_thickness() + 1, microswitch_length() + 1 + eta], center = true);
 
-                translate([-length / 2 - main_thickness / 2, 0, /*height / 2 + thickness*/0])
+                translate([-length / 2 - main_thickness / 2, z_axis_offset, 0])
                     rotate([0, 90, 0]) {
                         // Mount for Z smooth rod in top plate
                         translate([-(smooth_rod_height), 0, length + main_thickness])
@@ -113,16 +116,30 @@ module z_motor_bracket_assembly() {
     z_motor_bracket(z_coupling_height, thick_wall, structure_wall, my_frame_screw, small_screw, M3_clearance_radius);
 
     //Motor
-    translate([- 31.5, 0, 71.6 / 2 + 4])
+    translate([- 31.5, z_axis_offset, Z_smooth_rod_diameter / 2 + thick_wall - 0.5 + z_bar_spacing()])
         rotate([0, 90, 0])
             NEMA(Z_motor);
 
     // Z coupler
-    translate([0, 0, 71.6 / 2 + 4])
+    translate([0, z_axis_offset, Z_smooth_rod_diameter / 2 + thick_wall - 0.5 + z_bar_spacing()])
         rotate([90, 180, 90])
             z_coupler_assembly();
+
+    // Z leadscrew
+    translate([251, z_axis_offset, Z_smooth_rod_diameter / 2 + thick_wall - 0.5 + z_bar_spacing()])
+        rotate([0, 90, 0])
+            rod(Z_screw_diameter, 500);
+    
+    // Z smooth rod
+    translate([251, z_axis_offset, Z_smooth_rod_diameter / 2 + thick_wall - 0.5])
+        rotate([0, 90, 0])
+            rod(Z_smooth_rod_diameter, 500);
+
 }
 
-z_motor_bracket_assembly();
+// translate([10, -z_axis_offset, -35]) 
+//     rotate([0, 270, 0]) 
+        z_motor_bracket_assembly();
 
 
+// x_motor_end_assembly();

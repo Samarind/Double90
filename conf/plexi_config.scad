@@ -12,8 +12,10 @@ X_motor = NEMA23;
 Y_motor = NEMA23;
 Z_motor = NEMA23;
 
-frame_sheets_distance = max(50, NEMA_length(X_motor) + 29, NEMA_holes_distance(Z_motor) + 4 * structure_wall);
-z_coupling_height = 30;
+psu = KY240W;
+
+frame_sheets_distance = max(50, NEMA_length(X_motor) + 29, NEMA_holes_distance(Z_motor) + 4 * structure_wall, 20 + 10 + 14 + NEMA_length(Z_motor), psu_width(psu));
+z_coupling_height = 35;
 
 //Parameters of Z leadscrew
 Z_nut = TR10x2_round_nut;
@@ -52,7 +54,6 @@ frame_corners = 25;
 frame_nuts = true;
 
 case_fan = fan80x38;
-psu = ALPINE500;
 controller = Melzi;
 spool = spool_300x85;
 bottom_limit_switch = false;

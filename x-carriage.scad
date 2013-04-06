@@ -97,7 +97,7 @@ module x_carriage_assembled() {
     for (second = [0, x_bar_spacing()]) {
         translate([0, 0 , second]) {
             rotate([90, 0, 90]) 
-                rod(X_smooth_rod_diameter, 97 * 2);
+                rod(X_smooth_rod_diameter, 500);
                 for (i = [0, 2]) {
                     translate([(shelves_coordinate(X_bearings)[i] + shelves_coordinate(X_bearings)[i+1]) / 2 - bearings_holder_height(X_bearings) / 2, 0, 0])
                         linear_bearing(X_bearings);
@@ -128,18 +128,18 @@ module x_carriage_assembled() {
 
     }
 
-    *translate([- 44, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
-        x_motor_end_assembly();
+    // *translate([- 44, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
+    //     x_motor_end_assembly();
 
-    *translate([56, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
-        translate([11, 0, 0])
-            mirror([1, 0, 0]) {
-                x_end_assembly();
-            }
+    // *translate([56, -bearing_y_offset(), -(X_smooth_rod_diameter / 2 + wall)])
+    //     translate([11, 0, 0])
+    //         mirror([1, 0, 0]) {
+    //             x_end_assembly();
+    //         }
 
-    *translate([0, -50, axle_height])
-        rotate([0, -90, 0]) 
-            NEMA(X_motor);
+    // *translate([0, -50, axle_height])
+    //     rotate([0, -90, 0]) 
+    //         NEMA(X_motor);
 }
 
 x_carriage_assembled();

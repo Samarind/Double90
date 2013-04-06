@@ -6,17 +6,18 @@ use <bearing-holder.scad>;
 
 axle_height = spectra_bearing_height_position();
 axle_x_offset = -74.3;
+wall = thick_wall; 
 
 module x_motor_end() {
-    wall = thick_wall; 
-
     Z_bearings_holder_height = bearings_holder_height(Z_bearings);
     Z_bearing_holder_width = bearings_holder_width(Z_bearings);
     anti_backlash_wall_radius = Z_nut_radius + 0.2;
     anti_backlash_wall_width = max(3, Z_bearing_holder_width / 2 - wall - cos(30) * anti_backlash_wall_radius + 0.5);
     union () {
         difference() {
-            x_end_assembly();
+            color(x_end_bracket_color)
+                render()
+                    x_end();
 
             // Cutout for spectra line
             translate([-x_rod_clamp_length() / 2, bearing_y_offset(), axle_height - 0.5]) {
@@ -94,6 +95,29 @@ module x_motor_end() {
 
 module x_motor_end_assembly() {
     x_motor_end();
+
+    // Z leadscrew nut
+    if (is_hex(Z_nut)) {
+            // Hex nut
+    } else {
+        if (is_flanged(Z_nut)) {
+            // Round flanged nut
+            translate([-z_bar_spacing(), 0, 100])
+                rotate([0, 180, 20])
+                    flanged_nut(Z_nut);
+        } else {
+            // Round nut
+            translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - wall])
+                round_nut(Z_nut, brass = true, center = true);
+        }
+    }
+
+    // Z bearings
+    for(i = [0, 2]) {
+        translate([0, 0, (shelves_coordinate(Z_bearings)[i] + shelves_coordinate(Z_bearings)[i+1])/2 ])
+            rotate([0,90,0])
+                linear_bearing(Z_bearings);
+    }
 
     translate([axle_x_offset, bearing_y_offset(), axle_height]) {
         rotate([90, 0, 0])

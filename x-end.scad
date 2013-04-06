@@ -191,47 +191,39 @@ module x_end_assembly() {
             x_end();
 
     // Z leadscrew nut
-    *if (is_hex(Z_nut)) {
+    if (is_hex(Z_nut)) {
             // Hex nut
+    } else {
+        if (is_flanged(Z_nut)) {
+            // Round flanged nut
+            translate([-z_bar_spacing(), 0, 100])
+                rotate([0, 180, 20])
+                    flanged_nut(Z_nut);
         } else {
-            if (is_flanged(Z_nut)) {
-                // Round flanged nut
-                translate([-z_bar_spacing(), 0, 100])
-                    rotate([0, 180, 20])
-                        flanged_nut(Z_nut);
-            } else {
-                // Round nut
-                translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - wall])
-                    round_nut(Z_nut, brass = true, center = true);
-            }
+            // Round nut
+            translate([-z_bar_spacing(), 0, nut_depth(Z_nut) / 2 - wall])
+                round_nut(Z_nut, brass = true, center = true);
         }
+    }
     
     //Spectra line tensioning screw
-    *translate([0, bearing_y_offset, spectra_bearing_height_position + 1.5 * ball_bearing_diameter(x_spectra_bearing)])
+    translate([0, bearing_y_offset, spectra_bearing_height_position + 1.5 * ball_bearing_diameter(x_spectra_bearing)])
         rotate([90, 90, 90])
             color(screw_cap_color)
                 render()
                     screw(M3_pan_screw, 30, center = true);
 
     // Spectra line bearing
-    *translate([-clamp_length * 3 / 4 + wall, bearing_y_offset, spectra_bearing_height_position])
+    translate([-clamp_length * 3 / 4 + wall, bearing_y_offset, spectra_bearing_height_position])
         rotate([0, 90, 90]) {
             ball_bearing(BB624);
             624idler();
         }
 
     // Spectra line idler screw
-    *translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, spectra_bearing_height_position])
+    translate([-clamp_length * 3 / 4 + wall , clamp_width + Z_bearing_holder_width / 2 - wall, spectra_bearing_height_position])
         rotate([0, 90, 90]) 
             screw_and_washer(M4_pan_screw, screw_longer_than(clamp_width), center = true);
-
-    // Z leadscrew
-    *translate([-z_bar_spacing(), 0, 40])
-        rod(Z_screw_diameter, 150);
-    
-    // Z smooth rod
-    *translate([0, 0, 40])
-        rod(Z_smooth_rod_diameter, 200);
 
     // Z bearings
     for(i = [0, 2]) {
