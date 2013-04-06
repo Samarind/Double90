@@ -72,9 +72,9 @@ module x_carriage() {
             }
 
             // Central hole
-            translate([-wall / 2 , 0, x_bar_spacing() / 2])
+            translate([0, 0, x_bar_spacing() / 2])
                 rotate([90, 90, 0]) 
-                    teardrop_plus(r = 13, h = X_bearings_holder_length + eta, truncate=false, $fn = smooth, center = true);
+                    poly_cylinder(r = 15, h = X_bearings_holder_length + eta, $fn = smooth, center = true);
             
 
             //Empty space for bearings and rods
@@ -94,7 +94,7 @@ module x_carriage_assembled() {
             x_carriage();
 
     // X smooth rods with bearings
-    *for (second = [0, x_bar_spacing()]) {
+    for (second = [0, x_bar_spacing()]) {
         translate([0, 0 , second]) {
             rotate([90, 0, 90]) 
                 rod(X_smooth_rod_diameter, 97 * 2);
