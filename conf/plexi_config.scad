@@ -8,7 +8,7 @@ Z_bearings = LM12UU;
 Y_bearings = LM12UU;
 X_bearings = LM12UU;
 
-X_motor = NEMA23;
+X_motor = NEMA17;
 Y_motor = NEMA23;
 Z_motor = NEMA23;
 
