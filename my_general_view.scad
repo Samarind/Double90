@@ -8,21 +8,21 @@ include <conf/config.scad>
 
 z_height = 350;
 
-translate([220, -55, 400])
+translate([220, -10, 470])
     rotate([90, 0, 180])   {
-        translate([11, 38, -14.5]) 
-            import("Gregs/biggearmod_fixed.stl");
-        wade(hotend_mount=arcol_mount, legacy_mount=false);
-        translate([50, 37, 8]) 
-            rotate(20)
+        // translate([11, 38, -14.5]) 
+        //     import("Gregs/biggearmod_fixed.stl");
+        // wade(hotend_mount=arcol_mount, legacy_mount=false);
+        // translate([30, 37, 8]) 
+            // rotate(20)
                 rotate([180, 0, 0]) {
                     NEMA(X_motor);
-                    translate([0, 0, 2]) 
-                    import("Gregs/smallgearmod_fixed.stl");
+                    // translate([0, 0, 2]) 
+                    // import("Gregs/smallgearmod_fixed.stl");
                 }
     }
 
-*translate([10, -z_axis_offset, -35]) {
+translate([10, -z_axis_offset, -35]) {
     rotate([0, 270, 0]) 
         z_motor_bracket_assembly();
     rotate([0, 0, 180])   
@@ -33,12 +33,12 @@ translate([220, -55, 400])
 *translate([220, -8.5, -124])
     psu(psu);
 
-*translate([0, 0, z_height])
+translate([0, 0, z_height])
     x_motor_end_assembly(); 
 
 
 
-*for (sign = [-1, 1]) {
+for (sign = [-1, 1]) {
 // FRAME
 %translate([220, sign * frame_sheets_distance / 2 - z_axis_offset + sign * 5, 200])
     difference() {
@@ -50,11 +50,11 @@ translate([220, -55, 400])
     }
 }
 
-*translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
+translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
     x_carriage_assembled();
 
 
-*translate([430, 0, 0]) {
+translate([430, 0, 0]) {
         translate([11, 0, z_height])
             mirror([1, 0, 0])
                 x_end_assembly();
