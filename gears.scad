@@ -93,11 +93,14 @@ module large_inner_gear() {
 			// translate([0, 0, thick_wall])
 			// 	cylinder(r = hobbed_bolt_radius + 2 * thick_wall, h = thick_wall, center = true, $fn = smooth);
 		}
+		
 		// Hole for hobbed bolt
 		poly_cylinder(r = hobbed_bolt_radius, h = 50, center=true, $fn = smooth);
 
-		translate([0, 0, (thickness + 1) / 2 + thick_wall / 2  + 3 * thick_wall - 5 + eta])
-			cylinder(r = hobbed_bolt_head_radius, h = 6, center=true, $fn = 6);
+		// Hole for hobbed bolt's head
+		rotate(extruder_angle)
+			translate([0, 0, (thickness + 1) / 2 + thick_wall / 2  + 3 * thick_wall - 5 + eta])
+				cylinder(r = hobbed_bolt_head_radius, h = 6, center=true, $fn = 6);
 
 		// translate([0, 0, (thickness + 1) / 2 + thick_wall / 2 + ball_bearing_width(BB618) / 2 - eta])
 		// 	#cylinder(r = ball_bearing_diameter(BB618) / 2, h = ball_bearing_width(BB618), center=true, $fn = smooth);

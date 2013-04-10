@@ -16,6 +16,8 @@ number_of_teeth_on_pinion = 9;
 number_of_teeth_on_inner_gear = 47;
 hobbed_bolt_radius = 4;
 hobbed_bolt_head_radius = screw_head_radius(M8_hex_screw);
+filament_diameter = 3;
+extruder_angle = 22;
 
 psu = KY240W;
 
