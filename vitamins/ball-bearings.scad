@@ -7,11 +7,12 @@
 //
 // Ball bearings
 //      Inner dia   Outer dia    Thickness
-BB624 =     [4,         13,         5,      "624"];            // 624 ball bearing for idlers
-BB608 =     [8,         22,         7,      "608"];            // 608 bearings for wades
-BB6900 =    [10,        22,         6,      "6900"];           // For fixing Z leadscrew in Z motor bracket
-BB6800ZZ =  [10,        19,         5,      "6800ZZ"];
-BB624PRINTED =[4,       22,         5,      "624 + Printed"];  // for idler
+BB624 =       [4,         13,         5,      "624"];            
+BB608 =       [8,         22,         7,      "608"];            
+BB618 =       [8,         16,         5,      "618"];            // For extruder
+BB6900 =      [10,        22,         6,      "6900"];           // For fixing Z leadscrew in Z motor bracket
+BB6800ZZ =    [10,        19,         5,      "6800"];
+BB624PRINTED =[4,         22,         5,      "624 + Printed"];  // for spectra line idler
 
 function ball_bearing_diameter(type) = type[1];
 function ball_bearing_width(type) = type[2];

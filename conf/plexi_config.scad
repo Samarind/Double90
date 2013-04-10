@@ -1,6 +1,4 @@
-//
-// Plexi
-// GNU GPL v2
+// Plexi version
 // Configuration file
 
 //Bearings here define diameter of smooth rods
@@ -8,20 +6,24 @@ Z_bearings = LM12UU;
 Y_bearings = LM12UU;
 X_bearings = LM12UU;
 
-X_motor = NEMA17;
+X_motor = NEMA23;
 Y_motor = NEMA23;
-Z_motor = NEMA23;
+Z_motor = NEMA17;
+extruders_motor = NEMA17;
+
+// Extruders settings
+number_of_teeth_on_pinion = 9;
+number_of_teeth_on_inner_gear = 47;
+hobbed_bolt_radius = 4;
+hobbed_bolt_head_radius = screw_head_radius(M8_hex_screw);
 
 psu = KY240W;
 
 frame_sheets_distance = max(50, NEMA_length(X_motor) + 29, NEMA_holes_distance(Z_motor) + 4 * structure_wall, 20 + 10 + 14 + NEMA_length(Z_motor), psu_width(psu));
+// Height of coupling connecting Z motor shaft with leadscrew. Coupling fits inside Z-bracket
 z_coupling_height = 30;
 
-//Parameters of Z leadscrew
 Z_nut = TR10x2_round_nut;
-Z_screw_diameter = leadscrew_diameter(Z_nut);
-Z_nut_radius = nut_outer_radius(Z_nut);
-Z_nut_depth = nut_depth(Z_nut);
 
 my_frame_screw = M5_cap_screw;
 small_screw = M3_cap_screw;

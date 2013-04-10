@@ -1,5 +1,5 @@
 //
-// File with constants
+// File with constants, do not change it.
 //
 bom = 0;                        // 0 no bom, 1 assemblies and stls, 2 vitamins as well
 exploded = 0;
@@ -64,6 +64,7 @@ M8_tap_radius = 6.75 / 2;
 M8_clearance_radius = 8.4 / 2;
 M8_nut_radius = 15.4 / 2;
 M8_nut_depth = 6.5;
+M8_half_nut_depth = 3.7;
 
 M10_tap_radius = 8.2 / 2;
 M10_clearance_radius = 10.4 / 2;
@@ -81,7 +82,6 @@ feed_tube_rad = 5 / 2;              // Filament feed tube
 feed_tube_tape_rad = 6.2 / 2;
 feed_tube_tape = 12;
 nozzle_length = 54;                 // how far nozzle is below top of carriage
-
 
 include <colors.scad>
 include <utils.scad>
@@ -112,7 +112,6 @@ Y_bar_dia = Y_bearings[2];
 Z_smooth_rod_diameter = Z_bearings[2];
 
 z_axis_offset = frame_sheets_distance / 2 - X_smooth_rod_diameter - 2 * default_wall - bearing_radius(Z_bearings) - default_wall - 15;
-echo(str("Variable = ", z_axis_offset));
 
 screw_clearance_radius = screw_clearance_radius(cap_screw);
 nut = screw_nut(cap_screw);
@@ -237,5 +236,10 @@ module base_screw_hole() {
 bar_clamp_depth = 4 + washer_diameter(base_washer);           // how thick the bar clamps are
 bar_clamp_tab = 3 + washer_diameter(base_washer);             // how much the lugs stick out
 bar_clamp_band = 3;                                           // the thickness of the strap that clamps the bar.
+
+//Parameters of Z leadscrew
+Z_screw_diameter = leadscrew_diameter(Z_nut);
+Z_nut_radius = nut_outer_radius(Z_nut);
+Z_nut_depth = nut_depth(Z_nut);
 
 smooth = 30;

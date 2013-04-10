@@ -3,23 +3,35 @@ use <x-motor-end.scad>
 use <z-motor-bracket.scad>
 use <x-carriage.scad>
 use <z-top.scad>
+use <extruder.scad>
 use <Gregs/jonaskuehling_gregs-wade-v3.scad>
 include <conf/config.scad>
 
 z_height = 350;
 
-translate([220, -10, 470])
-    rotate([90, 0, 180])   {
-        // translate([11, 38, -14.5]) 
-        //     import("Gregs/biggearmod_fixed.stl");
-        // wade(hotend_mount=arcol_mount, legacy_mount=false);
-        // translate([30, 37, 8]) 
-            // rotate(20)
-                rotate([180, 0, 0]) {
-                    NEMA(X_motor);
-                    // translate([0, 0, 2]) 
-                    // import("Gregs/smallgearmod_fixed.stl");
-                }
+translate([220, -20, 495]) {
+    // rotate([90, 90, 0])
+    //     import("Gregs/biggearmod_fixed.stl");
+    // rotate([90, 90, 0]) 
+    //     translate([37, 10, -2])
+    //         rotate([0, 180, 90])
+    //             wade(hotend_mount=arcol_mount, legacy_mount=false);
+    //     translate([-40, 12, 10])
+    //         rotate([90, 0, 0])
+    //             NEMA(extruders_motor);
+
+    translate([30, -10, -5])
+        rotate([90, 90, 0])  
+            double_extruder();
+    
+    //     // translate([30, 37, 8]) 
+    //         // rotate(20)
+    //             rotate([180, 0, 0]) {
+    //                 translate([-22,0,0])
+    //                     NEMA(extruders_motor);
+    //                 translate([22,0,0])
+    //                     NEMA(extruders_motor);
+    //             }
     }
 
 translate([10, -z_axis_offset, -35]) {
@@ -30,7 +42,7 @@ translate([10, -z_axis_offset, -35]) {
             z_top();
 }
 
-*translate([220, -8.5, -124])
+translate([220, -8.5, -124])
     psu(psu);
 
 translate([0, 0, z_height])
