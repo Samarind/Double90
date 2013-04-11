@@ -9,40 +9,15 @@ include <conf/config.scad>
 
 z_height = 350;
 
-translate([220, -20, 495]) {
-    // rotate([90, 90, 0])
-    //     import("Gregs/biggearmod_fixed.stl");
-    // rotate([90, 90, 0]) 
-    //     translate([37, 10, -2])
-    //         rotate([0, 180, 90])
-    //             wade(hotend_mount=arcol_mount, legacy_mount=false);
-    //     translate([-40, 12, 10])
-    //         rotate([90, 0, 0])
-    //             NEMA(extruders_motor);
-
-    translate([30, -10, -5])
-        rotate([90, 90, 0])  
-            double_extruder();
-    
-    //     // translate([30, 37, 8]) 
-    //         // rotate(20)
-    //             rotate([180, 0, 0]) {
-    //                 translate([-22,0,0])
-    //                     NEMA(extruders_motor);
-    //                 translate([22,0,0])
-    //                     NEMA(extruders_motor);
-    //             }
-    }
-
 translate([10, -z_axis_offset, -35]) {
-    rotate([0, 270, 0]) 
+    *rotate([0, 270, 0]) 
         z_motor_bracket_assembly();
     rotate([0, 0, 180])   
         translate([24.5, 0, 480])
             z_top();
 }
 
-translate([220, -8.5, -124])
+*translate([220, -8.5, -124])
     psu(psu);
 
 translate([0, 0, z_height])
@@ -65,13 +40,18 @@ for (sign = [-1, 1]) {
 translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
     x_carriage_assembled();
 
+translate([250, -30, 490]) {
+    rotate([90, 90, 0])  
+        double_extruder();
+}
+
 
 translate([430, 0, 0]) {
-        translate([11, 0, z_height])
+        *translate([11, 0, z_height])
             mirror([1, 0, 0])
                 x_end_assembly();
 
-        translate([0, -z_axis_offset, -35]) 
+        *translate([0, -z_axis_offset, -35]) 
             mirror([0, 1, 0])
                 rotate([180, 270, 0]) 
                     z_motor_bracket_assembly();

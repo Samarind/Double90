@@ -1,13 +1,19 @@
 include <conf/config.scad>
 use <gears.scad>
 
-extruder_assembled();
+// rotate(-extruder_angle)
+// extruder_assembled();
+
+double_extruder();
+
+// filament_holder_assembled();
 
 module double_extruder() {
+	translate([0, -60, 0])
 	rotate(-extruder_angle)
 		extruder_assembled();
 
-	translate([0, -60, 0])
+	
 		mirror(0, 1, 1)
 			rotate(-extruder_angle)
 				rotate(180)
@@ -19,36 +25,80 @@ module extruder_assembled () {
 
 	translate([distance_between_gear_centers(), 0, -gear_thickness() - thick_wall - 1])
 		rotate(extruder_angle) 
+			rotate(28) 
 			NEMA(extruders_motor);
 
 	// Outer bearing for hobbed bolt
-	*translate([0, 0, ball_bearing_width(BB618) / 2])
+	translate([0, 0, ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Inner bearing for hobbed bolt
-	*translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
+	translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Hobbed bolt	
-	translate([0, 0, 12])
+	translate([0, 0, 7])
 		rotate(extruder_angle) 
-			screw(M8_hex_screw, 30);
+			screw(M8_hex_screw, 25);
 
 	// Nut holding hobbed bolt in place
 	translate([0, 0, -11])
 		rotate(extruder_angle) 
+		rotate(extruder_angle+8) 
 			nut(M8_half_nut);
 
-	// Bearing holding filament in place
 	rotate(extruder_angle) 
-		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter, -15])
-			ball_bearing(BB618);
+		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter - 1, -15])
+			filament_holder_assembled();
+}
+
+module filament_holder_assembled() {
+	filament_holder();
+
+	// Outer nut
+	translate([0, 0, 4])
+		nut(M8_half_nut);
+	
+	// Bearing
+	ball_bearing(BB618);
+
+	// Inner nut
+	translate([0, 0, -9])
+		// rotate(28) 
+			nut(M8_half_nut);
+
+	// Axle			
+	color(grey20) render()
+		cylinder(r = 4, h = 20, center = true, $fn = smooth);
+}
+
+module filament_holder() {
+	difference() {
+		// Body
+		translate([0, 3, -1])
+			cube([20, 18, 16], center = true);
+
+		// Hole for outer nut
+		translate([0, 0, 4 + 5])
+			cylinder(r = nut_outer_radius(M8_half_nut) + 0.1, h = 10, center = true, $fn = 6);
+
+		// Hole for bearing
+		cylinder(r = ball_bearing_diameter(BB618) / 2 + 1, h = ball_bearing_width(BB618) + 0.2, center = true, $fn = smooth);
+
+		// Hole for inner nut
+		translate([0, 0, -5 - 5])
+			// rotate(28) 
+				cylinder(r = nut_outer_radius(M8_half_nut) + 0.1, h = 10, center = true, $fn = 6);
+
+		// Hole for axle
+		cylinder(r = 4 + 0.1, h = 50, center = true, $fn = smooth);
+	}
 }
 
 module extruder() {
 	difference() {
 		union() {
-			*large_inner_gear();
+			large_inner_gear();
 
 			translate([distance_between_gear_centers(), 0, 0]) {
 				pinion();
@@ -72,8 +122,8 @@ module extruder() {
 
 		//Hole for filament
 		rotate(extruder_angle) 
-			translate([0, hobbed_bolt_radius + filament_diameter / 2, -15])
+			translate([50, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
 				rotate([0, 90, 0])
-					#cylinder(r=filament_diameter / 2 + 0.1, h=100, center=true, $fn = smooth);
+					#cylinder(r=filament_diameter / 2 + 0.1, h=200, center=true, $fn = smooth);
 	}
 }
