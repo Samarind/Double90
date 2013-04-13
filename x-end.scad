@@ -1,7 +1,7 @@
 // End of the X axis
 include <conf/config.scad>;
 use <624-idler.scad>;
-use <bearing-holder.scad>;
+use <details/bearing-holder.scad>;
 
 wall = thick_wall; 
 

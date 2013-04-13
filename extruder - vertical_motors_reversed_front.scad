@@ -4,19 +4,21 @@ use <gears.scad>
 // rotate(-extruder_angle)
 // 	extruder_assembled();
 
+rotate([0, 90, 0])
 double_extruder();
 
  // filament_holder_assembled();
 
 module double_extruder() {
-	translate([0, 65, 0])
-		rotate(-extruder_angle)
-			extruder_assembled();
+	rotate(-extruder_angle)
+		extruder_assembled();
 	
-	mirror(0, 1, 1)
-		rotate(-extruder_angle)
-			// rotate(180)
-				extruder_assembled();
+	translate([43, 0, -85.5])
+		// mirror(0, 1, 1)
+			rotate(extruder_angle)
+				rotate(180)
+					rotate([180, 0, 0])
+					extruder_assembled();
 }
 
 module extruder_assembled () {
@@ -37,16 +39,15 @@ module extruder_assembled () {
 
 	// Hobbed bolt	
 	translate([0, 0, 7])
-		rotate(extruder_angle) 
-			screw(M8_hex_screw, 25);
+		// rotate(extruder_angle) 
+			screw(M8_hex_screw, 55);
 
 	// Nut holding hobbed bolt in place
 	translate([0, 0, -11])
-		rotate(extruder_angle) 
-		rotate(extruder_angle+8) 
+		// rotate(extruder_angle) 
+		*rotate(extruder_angle+8) 
 			nut(M8_half_nut);
 
-	// Filament holder
 	*rotate(extruder_angle) 
 		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter - 1, -15])
 			filament_holder_assembled();
@@ -96,12 +97,11 @@ module extruder() {
 		union() {
 			large_inner_gear();
 
-			translate([distance_between_gear_centers(), 0, 0]) {
+			translate([distance_between_gear_centers(), 0, 0]) 
 				pinion();
-			}
 
 			// Extruder body
-			rotate(extruder_angle) 
+			// rotate(extruder_angle) 
 				translate([0, 0, -1])
 					cube([5 * thick_wall, 5 * thick_wall - 2, 2 + 2 * ball_bearing_width(BB618)], center = true);
 		}
@@ -118,7 +118,7 @@ module extruder() {
 
 		//Hole for filament
 		rotate(extruder_angle) 
-			translate([50, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
+			translate([0, hobbed_bolt_radius + filament_diameter / 2 - 1, -50])
 				rotate([0, 90, 0])
 					#cylinder(r=filament_diameter / 2 + 0.1, h=200, center=true, $fn = smooth);
 	}

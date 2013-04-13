@@ -36,7 +36,7 @@ helix_angle = atan(2 * nthicknesswist * circular_pitch / thickness);
 function distance_between_gear_centers() = pitch_diameter_of_inner_gear / 2 - (circular_pitch * number_of_teeth_on_pinion / PI) / 2;
 function gear_thickness() = thickness + thick_wall;
 
-
+pinion();
 
 module pinion() {
 	difference() { 
@@ -45,21 +45,26 @@ module pinion() {
 			translate([0, 0, -thickness / 2 - 1 / 2])
 				cylinder(r = base_diameter_of_pinion / 2 - 0.5, h = 1, center = true, $fn = smooth);
 			translate([0, 0, -thickness / 2 - 1 - 6 / 2])
-				cylinder(r2 = base_diameter_of_pinion / 2 - 0.5, r1 = 9, h = 6, center = true, $fn = smooth);
+				cylinder(r2 = base_diameter_of_pinion / 2 - 0.5, r1 = 7, h = 6, center = true, $fn = smooth);
 			translate([0, 0, -thickness / 2 - 1 - 6 - 5 / 2])
-				cylinder(r = 9, h = 5, center = true, $fn = smooth);
+				cylinder(r = 7, h = 5, center = true, $fn = smooth);
 		}
 
 		// Screw securing pinion on motor shaft
-		translate([0, 5, - NEMA_shaft_length(extruders_motor) + NEMA_boss(extruders_motor) + thickness / 2 + 5 / 2]) {
-			cube(size=[nut_outer_radius(M3_nut) * 2 + 1, nut_depth(M3_nut) + 1, nut_outer_radius(M3_nut) * 2 + 1], center=true);
-			rotate([90, 0, 0]) {
-				poly_cylinder(r = 1.5, h = 9, center = true, $fn = smooth);
+		translate([0, 4, - NEMA_shaft_length(extruders_motor) + NEMA_boss(extruders_motor) + thickness / 2 + 5 / 2]) {
+			cube(size=[nut_outer_radius(M3_nut) * 2 + 1, nut_depth(M3_nut) + 0.225, nut_outer_radius(M3_nut) * 2 + 0.5], center=true);
+			translate([0, 0, 0.5])
+				rotate([90, 0, 0]) {
+					poly_cylinder(r = 1.5, h = 11, center = true, $fn = smooth);
 			}
 			
 		}
 		cylinder(r = NEMA_shaft_radius(extruders_motor), h = 50, center = true, $fn = smooth);
 	}
+
+	translate([0, 4 + 1.2, - NEMA_shaft_length(extruders_motor) + NEMA_boss(extruders_motor) + thickness / 2 + 5 / 2 + 0.5]) 
+		rotate([90, 0, 0])
+			nut(M3_nut);	// cube(size=[nut_outer_radius(M3_nut) * 2 + 1, nut_depth(M3_nut) + 1, nut_outer_radius(M3_nut) * 2 + 1], center=true);
 }
 
 

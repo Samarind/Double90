@@ -2,7 +2,7 @@
 include <conf/config.scad>;
 use <spool.scad>;
 use <x-end.scad>;
-use <bearing-holder.scad>;
+use <details/bearing-holder.scad>;
 
 axle_height = spectra_bearing_height_position();
 axle_x_offset = -74.3;

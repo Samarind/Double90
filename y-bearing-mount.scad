@@ -9,7 +9,7 @@
 //
 include <conf/config.scad>
 include <positions.scad>
-use <bearing-holder.scad>
+use <details/bearing-holder.scad>
 use <bar-clamp.scad>
 
 nutty = cnc_sheets;

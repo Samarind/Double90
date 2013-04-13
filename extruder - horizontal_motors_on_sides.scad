@@ -1,21 +1,21 @@
 include <conf/config.scad>
 use <gears.scad>
 
-// rotate(-extruder_angle)
-// 	extruder_assembled();
+rotate(-extruder_angle)
+	extruder_assembled();
 
-double_extruder();
+// double_extruder();
 
  // filament_holder_assembled();
 
 module double_extruder() {
-	translate([0, 65, 0])
+	translate([0, -60, 0])
 		rotate(-extruder_angle)
 			extruder_assembled();
 	
 	mirror(0, 1, 1)
 		rotate(-extruder_angle)
-			// rotate(180)
+			rotate(180)
 				extruder_assembled();
 }
 
@@ -24,7 +24,7 @@ module extruder_assembled () {
 
 	translate([distance_between_gear_centers(), 0, -gear_thickness() - thick_wall - 1])
 		rotate(extruder_angle) 
-			// rotate(28) 
+			rotate(28) 
 				NEMA(extruders_motor);
 
 	// Outer bearing for hobbed bolt
@@ -46,8 +46,7 @@ module extruder_assembled () {
 		rotate(extruder_angle+8) 
 			nut(M8_half_nut);
 
-	// Filament holder
-	*rotate(extruder_angle) 
+	rotate(extruder_angle) 
 		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter - 1, -15])
 			filament_holder_assembled();
 }
@@ -94,7 +93,7 @@ module filament_holder() {
 module extruder() {
 	difference() {
 		union() {
-			large_inner_gear();
+			*large_inner_gear();
 
 			translate([distance_between_gear_centers(), 0, 0]) {
 				pinion();

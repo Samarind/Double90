@@ -1,4 +1,4 @@
-include <conf/config.scad>;
+include <../conf/config.scad>;
 
 bearing_holder_wall = 2.5;
 shelf_thickness = 2;
