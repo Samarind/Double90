@@ -62,9 +62,14 @@ module pinion() {
 		cylinder(r = NEMA_shaft_radius(extruders_motor), h = 50, center = true, $fn = smooth);
 	}
 
-	translate([0, 4 + 1.2, - NEMA_shaft_length(extruders_motor) + NEMA_boss(extruders_motor) + thickness / 2 + 5 / 2 + 0.5]) 
+	// Nut
+	translate([0, 4 + 1.2, - NEMA_shaft_length(extruders_motor) + NEMA_boss(extruders_motor) + thickness / 2 + 5 / 2 + 0.5]) {
+		translate([0, 1.5, 0])
+			rotate([270, 0, 0])
+				screw(M3_grub_screw, 4);
 		rotate([90, 0, 0])
-			nut(M3_nut);	// cube(size=[nut_outer_radius(M3_nut) * 2 + 1, nut_depth(M3_nut) + 1, nut_outer_radius(M3_nut) * 2 + 1], center=true);
+			nut(M3_nut);	
+	}
 }
 
 
