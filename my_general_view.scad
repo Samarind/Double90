@@ -8,14 +8,13 @@ include <conf/config.scad>
 
 z_height = 350;
 
-translate([10, -z_axis_offset, -35]) {
-    *rotate([0, 270, 0]) 
+*translate([10, -z_axis_offset, -35]) {
+    rotate([0, 270, 0]) 
         z_motor_bracket_assembly();
-    *rotate([0, 0, 180])   
+    rotate([0, 0, 180])   
         translate([24.5, 0, 480])
             z_top();
 }
-
 *translate([0, 0, z_height])
     x_motor_end_assembly(); 
 
@@ -26,7 +25,7 @@ translate([10, -z_axis_offset, -35]) {
 
 
 // Frame
-for (sign = [-1, 1]) {
+*for (sign = [-1, 1]) {
     %translate([220, sign * frame_sheets_distance / 2 - z_axis_offset + sign * 5, 200])
         difference() {
             translate([-25, 0, 0])
@@ -40,9 +39,11 @@ for (sign = [-1, 1]) {
 translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
     x_carriage_assembled();
 
-translate([250, -25, 489]) {
-    rotate([90, 90, 0])  
-        double_extruder();
+
+translate([233, -30, 430.5]) {
+    rotate([90, 90, 180])  
+        rotate(180)
+            double_extruder();
 }
 
 

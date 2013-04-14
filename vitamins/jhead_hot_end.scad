@@ -76,7 +76,7 @@ module jhead_hot_end(type, exploded = exploded) {
         }
     }
 
-    rotate([0, 0, 10]) {
+    *rotate([0, 0, 10]) {
         scale([1, (bundle + hot_end_insulator_diameter(type)) / hot_end_insulator_diameter(type)])
                 translate([0, -bundle / 2, -7])
             rotate([0, 0, -110])

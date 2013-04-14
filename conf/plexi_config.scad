@@ -17,11 +17,12 @@ number_of_teeth_on_inner_gear = 47;
 hobbed_bolt_radius = 4;
 hobbed_bolt_head_radius = screw_head_radius(M8_hex_screw);
 filament_diameter = 3;
-extruder_angle = 24;
+extruder_angle = 20;
 
 psu = KY240W;
 
 frame_sheets_distance = max(50, NEMA_length(X_motor) + 29, NEMA_holes_distance(Z_motor) + 4 * structure_wall, 20 + 10 + 14 + NEMA_length(Z_motor), psu_width(psu));
+
 // Height of coupling connecting Z motor shaft with leadscrew. Coupling fits inside Z-bracket
 z_coupling_height = 30;
 
