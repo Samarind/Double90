@@ -1,7 +1,9 @@
 include <../conf/config.scad>;
-use <../details/bearing-holder.scad>;
+use <bearing-holder.scad>;
+use <../x-end.scad>;
 
 wall = thick_wall;
+axle_height = spectra_bearing_height_position() - X_smooth_rod_diameter / 2 - wall + ball_bearing_diameter(x_spectra_bearing);
 X_bearings_holder_length = bearings_holder_height(X_bearings);
 
 x_carriage_plate();
@@ -41,8 +43,18 @@ module x_carriage_plate() {
                 rotate([90, 270, 90]) 
                     rail(X_bearings_holder_length, 40, 4 - 0.1);
         }
+        // Cut of back bottom
         translate([0, bearing_outer_diameter(X_bearings) / 2 + wall, x_bar_spacing() / 2 - wall])
             cube([X_bearings_holder_length + 2, 3 * wall, x_bar_spacing() / 2], center = true);
+
+        // Cutouts for extruder gears
+        translate([0, -bearing_outer_diameter(X_bearings) / 2 - wall - inner_gear_outer_diameter / 2 - 1, axle_height + (x_bar_spacing() - axle_height) / 2])
+            rotate([0, 90, 0]) { 
+                translate([0, 0, 11])
+                   poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
+                translate([0, 0, -11])
+                   poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
+            }
     }
 }
 

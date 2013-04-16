@@ -2,20 +2,23 @@ include <conf/config.scad>
 use <gears.scad>
 use <624-press.scad>
 use <vitamins/jhead_hot_end.scad>
+use <details/x-plate.scad>;
 
 filament_press_bearing = BB624PRINTEDPRESS;
 
 
-// START_POINT
-
-rotate(-extruder_angle)
+*rotate(-extruder_angle)
 	extruder_assembled();
 
-// double_extruder();
+double_extruder();
 
 *filament_holder_assembled();
 
 module double_extruder() {
+	translate([-58.8, -13, 45.8])
+		rotate([90, 0, 90])
+        	x_carriage_plate();
+
 	translate([0, -26, 0])
 		rotate([-90, 0, 0])
 			rotate(-extruder_angle)
@@ -36,13 +39,10 @@ module extruder_assembled () {
 	translate([distance_between_gear_centers(), 0, 0])
 		pinion();
 
-	// Hot end
-	*rotate(extruder_angle)	
-		translate([-30, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
-			rotate([0, 90, 0])	{
-				translate([-15, 0, -20])
-				cylinder(r=2, h=57.9, center=true);
-				jhead_hot_end(hot_end);}
+	// Filament holder
+	rotate(extruder_angle) 
+		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter + ball_bearing_diameter(filament_press_bearing) / 6 - 1.5, -15])
+			filament_holder_assembled();
 
 	// Motor
 	translate([distance_between_gear_centers(), 0, -gear_thickness() - thick_wall - 1])
@@ -66,10 +66,11 @@ module extruder_assembled () {
 	translate([0, 0, -11])
 		nut(M8_half_nut);
 
-	// Filament holder
-	rotate(extruder_angle) 
-		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter + ball_bearing_diameter(filament_press_bearing) / 6 - 1.5, -15])
-			filament_holder_assembled();
+	// Hot end
+	*rotate(extruder_angle)	
+		translate([-25, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
+			rotate([0, 90, 0])	{
+				jhead_hot_end(hot_end);}
 }
 
 module filament_holder_assembled() {
@@ -123,8 +124,8 @@ module extruder() {
 				translate([0, -(2.5 * thick_wall) / 2, -1 ]){
 				hull() {
 					cube([5 * thick_wall, 2.5 * thick_wall, 2 + 2 * ball_bearing_width(BB618)], center = true);
-					translate([0, -18.3, -14 ])
-						cube([5 * thick_wall, 2.5 * thick_wall,  2 * thick_wall], center = true);
+					translate([0, -13.3, -14 ])
+						cube([5 * thick_wall, 5 * thick_wall,  2 * thick_wall], center = true);
 					}
 				}
 
@@ -166,6 +167,6 @@ module extruder() {
 		rotate(extruder_angle) 
 			translate([0, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
 				rotate([0, 90, 0])
-					#cylinder(r = filament_diameter / 2 + 0.1, h = 100, center = true, $fn = smooth);
+					cylinder(r = filament_diameter / 2 + 0.1, h = 100, center = true, $fn = smooth);
 	}
 }

@@ -1,7 +1,6 @@
 include <conf/config.scad>;
 use <624-idler.scad>;
 use <details/bearing-holder.scad>;
-use <details/x-plate.scad>;
 use <spool.scad>;
 use <x-end.scad>;
 
@@ -19,9 +18,6 @@ module x_carriage_assembled() {
         render() 
             x_carriage();
     
-    translate([0.1, 0, 0])
-        x_carriage_plate();
-
     // X smooth rods with bearings
     for (second = [0, x_bar_spacing()]) {
         translate([0, 0 , second]) {

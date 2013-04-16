@@ -40,7 +40,7 @@ translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
     x_carriage_assembled();
 
 
-translate([233, -30, 430.5]) {
+translate([233, -26.5, 419]) {
     rotate([90, 90, 180])  
         rotate(180)
             double_extruder();

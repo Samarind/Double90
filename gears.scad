@@ -1,8 +1,5 @@
 include <conf/config.scad>
 
-// Outer diameter of bigger (internal) gear
-outer_diameter = 60;
-
 // Thickness of gears
 thickness = 10;
 
@@ -21,7 +18,7 @@ nthicknesswist = 0.8;
 // Maximum depth ratio of teeth
 DR = 0.5; 
 
-pitch_diameter_of_inner_gear = 0.90 * outer_diameter / (1 + min(PI / (2 * number_of_teeth_on_inner_gear * tan(alpha)), PI * DR / number_of_teeth_on_inner_gear, 2 * cos(alpha) / number_of_teeth_on_inner_gear));
+pitch_diameter_of_inner_gear = 0.90 * inner_gear_outer_diameter / (1 + min(PI / (2 * number_of_teeth_on_inner_gear * tan(alpha)), PI * DR / number_of_teeth_on_inner_gear, 2 * cos(alpha) / number_of_teeth_on_inner_gear));
 circular_pitch = PI * pitch_diameter_of_inner_gear / number_of_teeth_on_inner_gear;
 pitch_diameter_of_pinion = circular_pitch * number_of_teeth_on_pinion / PI;
 base_diameter_of_pinion = pitch_diameter_of_pinion * cos(alpha);
@@ -77,7 +74,7 @@ module pinion() {
 module large_inner_gear() {
 	// Gear ring
 	difference() { 
-		cylinder(r = outer_diameter / 2, h = thickness + 1, center = true, $fn = smooth);
+		cylinder(r = inner_gear_outer_diameter / 2, h = thickness + 1, center = true, $fn = smooth);
 		herringbone(number_of_teeth_on_inner_gear, circular_pitch, alpha, DR, -clearance, helix_angle, thickness + 1 + eta);
 	}
 
@@ -85,13 +82,13 @@ module large_inner_gear() {
 	difference() { 
 		translate([0, 0, (thickness + 1) / 2 + thick_wall / 2]) {
 			difference() { 
-				cylinder(r = outer_diameter / 2, h = thick_wall, center = true, $fn = smooth);
-				poly_cylinder(r = outer_diameter / 2 - thick_wall, h = thick_wall + 1, center = true, $fn = smooth);
+				cylinder(r = inner_gear_outer_diameter / 2, h = thick_wall, center = true, $fn = smooth);
+				poly_cylinder(r = inner_gear_outer_diameter / 2 - thick_wall, h = thick_wall + 1, center = true, $fn = smooth);
 			}
 
 			for (angle = [0, 45, 90, 135, 180, 225, 270, 315]) {
 				rotate(angle)
-					cube([thick_wall, outer_diameter - 1, thick_wall], center = true);
+					cube([thick_wall, inner_gear_outer_diameter - 1, thick_wall], center = true);
 			}
 
 			// Central piece that holds hobbed bolt's head
