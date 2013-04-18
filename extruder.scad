@@ -17,7 +17,7 @@ dual_extruder();
 // filament_holder_assembled();
 
 module dual_extruder_assembled() {
-	translate([-58.8, -13, 45.8])
+	translate([-58.8, -17, 51])
 		rotate([90, 0, 90])
         	x_plate_for_dual_extruder();
 
@@ -25,6 +25,22 @@ module dual_extruder_assembled() {
 }
 
 module dual_extruder() {
+	difference() {
+		// Plate to fix to x-carriage
+		translate([1, -17.5, 30.3])
+			cube(size=[80, 73, thick_wall], center=true);
+
+		translate([0, -17.5, 0]) {
+	        translate([0, 15.5, 0])
+	        	rotate([0, 90, 90])
+	           		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
+
+	        translate([0, -15.5, 0])
+	        	rotate([0, 90, 90])
+	           		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
+		}
+	}
+
 	translate([0, -35, 0])
 		rotate([-90, 0, 0])
 			rotate(-extruder_angle)
@@ -40,13 +56,13 @@ module dual_extruder() {
 module extruder_assembled () {
 	extruder();
 
-	*large_inner_gear();
+	large_inner_gear();
 
-	translate([distance_between_gear_centers(), 0, 0])
+	*translate([distance_between_gear_centers(), 0, 0])
 		pinion();
 
 	// Filament holder
-	*rotate(extruder_angle) 
+	rotate(extruder_angle) 
 		translate([0, ball_bearing_diameter(BB618) / 2 + hobbed_bolt_radius + filament_diameter + ball_bearing_diameter(filament_press_bearing) / 6 - 1.5, -15])
 			filament_holder_assembled();
 
@@ -56,20 +72,20 @@ module extruder_assembled () {
 			NEMA(extruders_motor);
 
 	// Outer bearing for hobbed bolt
-	translate([0, 0, ball_bearing_width(BB618) / 2])
+	*translate([0, 0, ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Inner bearing for hobbed bolt
-	translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
+	*translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Hobbed bolt	
-	translate([0, 0, 7])
+	*translate([0, 0, 7])
 		rotate(extruder_angle) 
 			screw(M8_hex_screw, 25);
 
 	// Nut holding hobbed bolt in place
-	rotate(90 + extruder_angle)
+	*rotate(90 + extruder_angle)
 		translate([0, 0, -11])
 			nut(M8_half_nut);
 
@@ -99,8 +115,8 @@ module filament_holder_assembled() {
 module filament_holder() {
 	difference() {
 		// Body
-		translate([5, 0, 00])
-			cube([35, ball_bearing_diameter(filament_press_bearing) * 3 / 4, 15], center = true);
+		translate([5, 0, 0])
+			cube([30, ball_bearing_diameter(filament_press_bearing) * 3 / 4, 15], center = true);
 
 		// Hole for outer nut
 		translate([0, 0, 10])
@@ -115,7 +131,7 @@ module filament_holder() {
 		cylinder(r = screw_radius(M4_cap_screw) + 0.1, h = 50, center = true, $fn = smooth);
 
 		// Cutout for motor
-		translate([19.5, -22, -2.5])
+		translate([19.5, -23, -3.5])
 			NEMA(extruders_motor);
 	}
 }

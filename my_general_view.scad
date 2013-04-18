@@ -25,7 +25,7 @@ z_height = 350;
 
 
 // Frame
-*for (sign = [-1, 1]) {
+for (sign = [-1, 1]) {
     %translate([220, sign * frame_sheets_distance / 2 - z_axis_offset + sign * 5, 200])
         difference() {
             translate([-25, 0, 0])
@@ -40,10 +40,10 @@ translate([220, bearing_y_offset(), x_rod_clamp_width() / 2 + z_height])
     x_carriage_assembled();
 
 
-translate([233, -26.5, 419]) {
+translate([237, -31.7, 419]) {
     rotate([90, 90, 180])  
         rotate(180)
-            dual_extruder();
+            dual_extruder_assembled();
 }
 
 
