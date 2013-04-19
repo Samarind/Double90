@@ -80,7 +80,7 @@ module extruder_assembled () {
 		ball_bearing(BB618);
 
 	// Hobbed bolt	
-	*translate([0, 0, 7])
+	translate([0, 0, 7])
 		rotate(extruder_angle) 
 			screw(M8_hex_screw, 25);
 
@@ -125,7 +125,7 @@ module extruder() {
 				rotate(extruder_angle) 
 					intersection() {	
 						cube([NEMA_width(extruders_motor), NEMA_width(extruders_motor), 2 * thick_wall], center = true);
-						translate([NEMA_width(extruders_motor) / 2 - 1, -NEMA_width(extruders_motor) / 2 , 0])
+						translate([NEMA_width(extruders_motor) / 2 - 1, -NEMA_width(extruders_motor) / 2 + 4, 0])
 							cylinder(r = NEMA_width(extruders_motor), h = 2 * thick_wall, center = true, $fn = smooth);
 					}
 
@@ -167,7 +167,7 @@ module extruder() {
 				cube([(hobbed_bolt_radius + 0.1) * 2, (2.5 * thick_wall) * 2, 2 + 2 * ball_bearing_width(BB618) + eta], center = true);
 
 		//Hole for hobbed bolt
-		poly_cylinder(r = hobbed_bolt_radius + 1, h=40, center=true);
+		poly_cylinder(r = hobbed_bolt_radius + 0.5, h=40, center=true);
 
 		//Hole for outer bearing
 		translate([0, 0, (ball_bearing_width(BB618) + 0.1) / 2])
@@ -211,8 +211,11 @@ module filament_holder() {
 	difference() {
 		union() {
 			// Body
-			translate([4, 0, 0])
-				cube([length, thickness, width], center = true);
+			intersection() {
+				translate([4, 0, 0])
+					cube([length, thickness, width], center = true);
+				cylinder(r = ball_bearing_diameter(filament_press_bearing) / 2 + 2, h = width, center = true, $fn = smooth);
+			}
 
 			// Lever
 			translate([- length / 2 - 6 + hinge_radius, thickness / 2 - lever / 2 - hinge_radius, 0])
