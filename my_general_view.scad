@@ -8,19 +8,19 @@ include <conf/config.scad>
 
 z_height = 350;
 
-*translate([10, -z_axis_offset, -35]) {
+translate([10, -z_axis_offset, -35]) {
     rotate([0, 270, 0]) 
         z_motor_bracket_assembly();
     rotate([0, 0, 180])   
         translate([24.5, 0, 480])
             z_top();
 }
-*translate([0, 0, z_height])
+translate([0, 0, z_height])
     x_motor_end_assembly(); 
 
 
 
-*translate([220, -8.5, -124])
+translate([220, -8.5, -124])
     psu(psu);
 
 
@@ -48,16 +48,16 @@ translate([237, -31.7, 419]) {
 
 
 translate([430, 0, 0]) {
-        *translate([11, 0, z_height])
+        translate([11, 0, z_height])
             mirror([1, 0, 0])
                 x_end_assembly();
 
-        *translate([0, -z_axis_offset, -35]) 
+        translate([0, -z_axis_offset, -35]) 
             mirror([0, 1, 0])
                 rotate([180, 270, 0]) 
                     z_motor_bracket_assembly();
 
-        *translate([24.5, -z_axis_offset, 480 - 35])
+        translate([24.5, -z_axis_offset, 480 - 35])
             mirror([0, 1, 0])
                 z_top();
 }
