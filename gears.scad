@@ -32,6 +32,7 @@ helix_angle = atan(2 * nthicknesswist * circular_pitch / thickness);
 
 function distance_between_gear_centers() = pitch_diameter_of_inner_gear / 2 - (circular_pitch * number_of_teeth_on_pinion / PI) / 2;
 function gear_thickness() = thickness + thick_wall;
+function pinion_diameter() = 14;
 
 pinion();
 
@@ -44,7 +45,7 @@ module pinion() {
 			translate([0, 0, -thickness / 2 - 1 - 6 / 2])
 				cylinder(r2 = base_diameter_of_pinion / 2 - 0.5, r1 = 7, h = 6, center = true, $fn = smooth);
 			translate([0, 0, -thickness / 2 - 1 - 6 - 5 / 2])
-				cylinder(r = 7, h = 5, center = true, $fn = smooth);
+				cylinder(r = pinion_diameter() / 2, h = 5, center = true, $fn = smooth);
 		}
 
 		// Screw securing pinion on motor shaft

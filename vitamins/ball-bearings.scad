@@ -13,7 +13,7 @@ BB618 =       [8,         16,         5,      "618"];            // For extruder
 BB6900 =      [10,        22,         6,      "6900"];           // For fixing Z leadscrew in Z motor bracket
 BB6800ZZ =    [10,        19,         5,      "6800"];
 BB624PRINTED =[4,         22,         5,      "624 + Printed"];  // for spectra line idler
-BB624PRINTEDPRESS=[4,     23,         5,      "624 + PRINTEDPRESS"];  // for extruder
+BB624PRINTEDPRESS=[4,     25,         5,      "624 + PRINTEDPRESS"];  // for extruder
 
 function ball_bearing_diameter(type) = type[1];
 function ball_bearing_width(type) = type[2];
