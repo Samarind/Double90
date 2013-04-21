@@ -2,22 +2,24 @@ include <conf/config.scad>
 use <gears.scad>
 use <624-press.scad>
 use <vitamins/jhead_hot_end.scad>
+use <vitamins/washers.scad>
+use <vitamins/springs.scad>
 use <x-plate-for-dual-extruder.scad>;
 
 filament_press_bearing = BB624PRINTEDPRESS;
 
 
-rotate(-extruder_angle)
+*rotate(-extruder_angle)
 	extruder_assembled();
 
 // dual_extruder();
 
-// dual_extruder_assembled();
+dual_extruder_assembled();
 
 // filament_holder_assembled();
 
 module dual_extruder_assembled() {
-	translate([-58.8, -17, 51])
+	translate([-58.8, -16.5, 51])
 		rotate([90, 0, 90])
         	x_plate_for_dual_extruder();
 
@@ -27,21 +29,16 @@ module dual_extruder_assembled() {
 module dual_extruder() {
 	difference() {
 		// Plate to fix to x-carriage
-		translate([1, -17.5, 30.3])
-			cube(size=[80, 73, thick_wall], center=true);
+		translate([1, -16.5, 30.3])
+			cube(size=[80, 71, thick_wall], center=true);
 
 		translate([0, -17.5, 0]) {
-	        translate([0, 15.5, 0])
-	        	rotate([0, 90, 90])
-	           		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
-
-	        translate([0, -15.5, 0])
-	        	rotate([0, 90, 90])
-	           		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 16, $fn = smooth, center = true);
+        	rotate([0, 90, 90])
+           		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 15.5*2 + 16, $fn = smooth, center = true);
 		}
 	}
 
-	translate([0, -35, 0])
+	translate([0, -33, 0])
 		rotate([-90, 0, 0])
 			rotate(-extruder_angle)
 				extruder_assembled();
@@ -56,13 +53,13 @@ module dual_extruder() {
 module extruder_assembled () {
 	extruder();
 
-	*large_inner_gear();
+	large_inner_gear();
 
 	*translate([distance_between_gear_centers(), 0, 0])
 		pinion();
 
 	// Filament holder
-	rotate(extruder_angle) 
+	*rotate(extruder_angle) 
 		translate([0, hobbed_bolt_radius - 1.5 + filament_diameter + ball_bearing_diameter(filament_press_bearing) / 2, -15])
 			filament_holder_assembled();
 
@@ -72,20 +69,20 @@ module extruder_assembled () {
 			NEMA(extruders_motor);
 
 	// Outer bearing for hobbed bolt
-	*translate([0, 0, ball_bearing_width(BB618) / 2])
+	translate([0, 0, ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Inner bearing for hobbed bolt
-	*translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
+	translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Hobbed bolt	
-	translate([0, 0, 7])
+	*translate([0, 0, 7])
 		rotate(extruder_angle) 
 			screw(M8_hex_screw, 25);
 
 	// Nut holding hobbed bolt in place
-	*rotate(90 + extruder_angle)
+	rotate(90 + extruder_angle)
 		translate([0, 0, -11])
 			nut(M8_half_nut);
 
@@ -140,9 +137,9 @@ module extruder() {
 		}
 
 		// Hole for screw pushing filament holder against extruder
-		translate([distance_between_gear_centers() - 3.5, 22, -gear_thickness() - 1]) 	
+		translate([distance_between_gear_centers() - 0.8, 22, -gear_thickness() - 1]) 	
 			rotate(extruder_angle) {
-				translate([3.5, -4, 0])
+				translate([2.5, -3, 0])
 					cylinder(r = nut_outer_radius(M3_nut), h = 2 * thick_wall + eta, center = true, $fn = smooth);
 				rotate([-43, 90, 90])  
 					cylinder(r = screw_radius(M3_cap_screw) + 0.1, h = 10, center = true, $fn = smooth);
@@ -207,9 +204,28 @@ module filament_holder_assembled() {
 	ball_bearing(filament_press_bearing);
 
 	// Bearing axle
-	*translate([0, 0, -7.5])
+	translate([0, 0, -7.5])
 		rotate([0, 180, 0])
-			screw(M4_cap_screw, 15);
+			screw(M4_cap_screw, 20);
+
+	// Hinge axle	
+	translate([- 31 / 2 -1, - 40 + 20 / 2, 7.5])
+		screw(M4_cap_screw, 20);
+	translate([- 31 / 2 -1, - 40 + 20 / 2, -11])
+		nut(M4_nut);
+
+	// Screw that pushes holder against the extruder
+	translate([distance_between_gear_centers() - 3.1, 5, 0]) 	
+		rotate([-43, 90, 90]) { 
+			translate([0, 0, 11]) {
+					screw(M3_cap_screw, 30);
+					translate([0, 0, -0.6])
+						washer(M3_washer);
+					translate([0, 0, -13])
+						comp_spring(extruder_spring, l = 12);
+				}
+			
+		}
 }
 
 module filament_holder() {
@@ -217,17 +233,27 @@ module filament_holder() {
 	width = 15;
 	lever = 40;
 	hinge_radius = 5;
-	thickness = 4 * hinge_radius;//ball_bearing_diameter(filament_press_bearing) * 3 / 4;
+	thickness = 4 * hinge_radius;
 
 	difference() {
 		union() {
 			// Body
-			translate([4 + 3, 0, 0])
-				cube([length + 6, thickness, width], center = true);
+			translate([4 - 1, 0, 0])
+				cube([length - 2, thickness, width], center = true);
+
+			// Round top
+			hull() {
+				translate([17, 2.7, 0])
+					cylinder(r = 7.4, h = width, center = true, $fn = smooth);
+
+				translate([35, 7, 0])
+					cylinder(r = 3, h = width, center = true, $fn = smooth);
+			}
 
 			// Lever
 			translate([- length / 2 - 6 + hinge_radius, thickness / 2 - lever / 2 - hinge_radius, 0])
 				cube([2 * hinge_radius, lever - 2 * hinge_radius, width], center = true);
+			
 			// Hinge
 			translate([- length / 2 - 6 + hinge_radius, - lever + thickness / 2, 0])
 				cylinder(r = hinge_radius, h = width, center = true, $fn = smooth);
@@ -236,17 +262,23 @@ module filament_holder() {
 			translate([- length / 2 - 6 + 2 * hinge_radius, 0, 0])
 				cylinder(r = 2 * hinge_radius, h = width, center = true, $fn = smooth);
 		}
+		// Cutout on the top to form a handle
+		translate([26.5, 28.2, 0])
+			cylinder(r = 20, h = width + 1, center = true, $fn = smooth);
 
-		translate([distance_between_gear_centers() - 2, 5, 0]) 	
+		// Hole for screw pushing against the extruder
+		translate([distance_between_gear_centers() - 3.1, 5, 0]) 	
 			rotate([-43, 90, 90]) { 
-				#cylinder(r = screw_radius(M3_cap_screw) + 0.1, h = 25, center = true, $fn = smooth);
-				translate([0, -10, 7.5])
+				cylinder(r = screw_radius(M3_cap_screw) + 0.1, h = 20, center = true, $fn = smooth);
+				
+				translate([0, -10, 5])
 					rotate([90, 0, 0])
-						#cube([7.5 + 20, 20, 7.5 + 20], center = true);
+						cube([7.5, 15, 6 + 20], center = true);
 			}
 
+		// Cutout for extruder
 		translate([40, -40, 0])
-			cylinder(r = NEMA_width(extruders_motor), h = width, center = true, $fn = smooth);
+			cylinder(r = NEMA_width(extruders_motor), h = width + 1, center = true, $fn = smooth);
 
 		// Hole for nut
 		translate([0, 0, 10])
