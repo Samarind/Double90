@@ -1,6 +1,5 @@
 include <conf/config.scad>
 use <gears.scad>
-use <624-press.scad>
 use <vitamins/jhead_hot_end.scad>
 use <vitamins/washers.scad>
 use <vitamins/springs.scad>
@@ -59,7 +58,7 @@ module extruder_assembled () {
 		pinion();
 
 	// Filament holder
-	*rotate(extruder_angle) 
+	rotate(extruder_angle) 
 		translate([0, hobbed_bolt_radius - 1.5 + filament_diameter + ball_bearing_diameter(filament_press_bearing) / 2, -15])
 			filament_holder_assembled();
 
@@ -69,11 +68,11 @@ module extruder_assembled () {
 			NEMA(extruders_motor);
 
 	// Outer bearing for hobbed bolt
-	translate([0, 0, ball_bearing_width(BB618) / 2])
+	*translate([0, 0, ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Inner bearing for hobbed bolt
-	translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
+	*translate([0, 0, -2 - ball_bearing_width(BB618) / 2])
 		ball_bearing(BB618);
 
 	// Hobbed bolt	
@@ -82,13 +81,13 @@ module extruder_assembled () {
 			screw(M8_hex_screw, 25);
 
 	// Nut holding hobbed bolt in place
-	rotate(90 + extruder_angle)
+	*rotate(90 + extruder_angle)
 		translate([0, 0, -11])
 			nut(M8_half_nut);
 
 	// Hot end
-	*rotate(extruder_angle)	
-		translate([-40, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
+	rotate(extruder_angle)	
+		translate([-35, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
 			rotate([0, 90, 0])	{
 				jhead_hot_end(hot_end);}
 }
@@ -186,7 +185,7 @@ module extruder() {
 			poly_cylinder(r = ball_bearing_diameter(BB618) / 2 + 0.1, h = ball_bearing_width(BB618) * 2 + 1, center=true);
 
 		//Hole for filament
-		rotate(extruder_angle) 
+		#rotate(extruder_angle) 
 			translate([0, hobbed_bolt_radius + filament_diameter / 2 - 1, -15])
 				rotate([0, 90, 0])
 					cylinder(r = filament_diameter / 2 + 0.2, h = 100, center = true, $fn = smooth);

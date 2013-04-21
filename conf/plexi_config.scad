@@ -19,6 +19,7 @@ hobbed_bolt_head_radius = screw_head_radius(M8_hex_screw); // Defines hobbed bol
 filament_diameter = 3; 
 extruder_angle = 20; // Angle defines position of pinion relative to inner gear
 inner_gear_outer_diameter = 60; // Outer diameter of bigger (internal) gear
+hotend_y_offset = hobbed_bolt_radius + filament_diameter / 2 - 1 + 51;
 
 psu = KY240W;
 

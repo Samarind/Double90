@@ -111,7 +111,7 @@ X_smooth_rod_diameter = X_bearings[2];
 Y_bar_dia = Y_bearings[2];
 Z_smooth_rod_diameter = Z_bearings[2];
 
-z_axis_offset = frame_sheets_distance / 2 - X_smooth_rod_diameter - 2 * default_wall - bearing_radius(Z_bearings) - default_wall - 15;
+z_axis_offset = frame_sheets_distance / 2 - X_smooth_rod_diameter - 2 * default_wall - bearing_radius(Z_bearings) - default_wall - 10;
 
 screw_clearance_radius = screw_clearance_radius(cap_screw);
 nut = screw_nut(cap_screw);
