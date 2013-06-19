@@ -4,11 +4,12 @@ use <z-motor-bracket.scad>
 use <x-carriage.scad>
 use <z-top.scad>
 use <extruder.scad>
+use <y-carriage.scad>
 include <conf/config.scad>
 
 z_height = 350;
 
-translate([10, -z_axis_offset, -35]) {
+*translate([10, -z_axis_offset, -35]) {
     rotate([0, 270, 0]) 
         z_motor_bracket_assembly();
     rotate([0, 0, 180])   
@@ -43,17 +44,19 @@ translate([0, 0, -19]) {
 
 // Frame
 for (sign = [-1, 1]) {
-    %translate([220, sign * frame_sheets_distance / 2 - z_axis_offset + sign * 5, 200])
-        difference() {
-            translate([-25, 0, 0])
-                cube([630, 10, 650], center=true);
-            // Windows
-            translate([0, 0, -50 + 40])
-                cube([400, 11, 450 + 80], center=true);
-        }
+    color(sheet_colour(PMMA10))
+        render() 
+            translate([220, sign * frame_sheets_distance / 2 - z_axis_offset + sign * 5, 200])
+                difference() {
+                    translate([-25, 0, 0])
+                        cube([630, 10, 650], center=true);
+                    // Windows
+                    translate([0, 0, -50 + 40])
+                        cube([400, 11, 450 + 80], center=true);
+                }
 }
 
-translate([0, 0, 0]) {
+*translate([0, 0, 0]) {
     translate([220, bearing_y_offset(), x_rod_clamp_width() / 2])
         x_carriage_assembled();
 
@@ -63,6 +66,7 @@ translate([0, 0, 0]) {
         mirror([1, 0, 0])
             x_end_assembly();
 
+    // Extruder
     translate([237, -31.9, 68.8])
         rotate([90, 90, 180])  
             rotate(180)

@@ -108,7 +108,7 @@ include <variant.scad>              // this file is generated from the command l
 
 // rod sizes to match the bearings
 X_smooth_rod_diameter = X_bearings[2];      
-Y_bar_dia = Y_bearings[2];
+Y_smooth_rod_diameter = Y_bearings[2];
 Z_smooth_rod_diameter = Z_bearings[2];
 
 z_axis_offset = frame_sheets_distance / 2 - X_smooth_rod_diameter - 2 * default_wall - bearing_radius(Z_bearings) - default_wall - 10;

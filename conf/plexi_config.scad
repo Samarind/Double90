@@ -8,7 +8,7 @@ X_bearings = LM12UU;
 
 X_motor = NEMA23;
 Y_motor = NEMA23;
-Z_motor = NEMA17;
+Z_motor = NEMA23;
 extruders_motor = NEMA17;
 
 // Extruders settings
@@ -36,27 +36,30 @@ small_nut = M3_nut;
 
 x_spectra_bearing = BB624PRINTED;
 
+hot_end = JHeadMk5;
+
+bed_depth = 300;
+bed_width = 300;
+bed_glass = glass2;
+bed_thickness = pcb_thickness + sheet_thickness(bed_glass);    // PCB heater plus glass sheet
+bed_holes = 292;
+bed_pillars = M3x20_pillar;
+
+frame = PMMA10;
 
 // UNUSED ---------------------------------------------------------
-hot_end = JHeadMk5;
 
 X_travel = 200;
 Y_travel = 200;
 Z_travel = 200;
 
 
-bed_depth = 214;
-bed_width = 214;
-bed_pillars = M3x20_pillar;
-bed_glass = glass2;
-bed_thickness = pcb_thickness + sheet_thickness(bed_glass);    // PCB heater plus glass sheet
-bed_holes = 209;
 
 base = PMMA10;                  // Sheet material used for the base. Needs to be thick enough to screw into.
 base_corners = 25;
 base_nuts = true;
 
-frame = PMMA10;
+
 frame_corners = 25;
 frame_nuts = true;
 

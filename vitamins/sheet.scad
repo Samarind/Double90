@@ -6,7 +6,7 @@
 // hydraraptor.blogspot.com
 //
 // Flat sheets
-//
+//esdfsd
 
 // If you'd like to add a new material type, or a different color of an existing material type
 // simply add a new line here (or in your machine config file).
@@ -18,7 +18,7 @@
 // The "Color" parameter is a quad-array: [R, G, B, Alpha], or can be a named color
 // see http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/The_OpenSCAD_Language#color
 //
-//         [ Code, Description, Thickness, Color, Soft]
+//         [ Code, Description,     Thickness, Color,                 Soft]
 //
 MDF6     = [ "MD", "MDF sheet",            6, [0.4, 0.4, 0.2, 1    ], true];    // ~1/4"
 MDF10    = [ "MD", "MDF sheet",           10, [0.4, 0.4, 0.2, 1    ], true];    // ~3/8"

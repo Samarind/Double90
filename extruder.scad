@@ -31,6 +31,7 @@ module dual_extruder() {
 		translate([1, -16.5, 30.3])
 			cube(size=[80, 71, thick_wall], center=true);
 
+		// Cutouts in plate for big extruder gears
 		translate([0, -17.5, 0]) {
         	rotate([0, 90, 90])
            		poly_cylinder(r = inner_gear_outer_diameter / 2 + 0.2, h = 15.5*2 + 16, $fn = smooth, center = true);
@@ -63,7 +64,7 @@ module extruder_assembled () {
 			filament_holder_assembled();
 
 	// Motor
-	*translate([distance_between_gear_centers(), 0, -gear_thickness() - thick_wall - 1])
+	translate([distance_between_gear_centers(), 0, -gear_thickness() - thick_wall - 1])
 		rotate(extruder_angle) 
 			NEMA(extruders_motor);
 
